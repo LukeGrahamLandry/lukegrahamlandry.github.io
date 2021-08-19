@@ -1,13 +1,14 @@
 body {
-    background-color: #282c35;
+    background-color: #1c1e22;
     scrollbar-color:  rgb(53, 53, 53)  rgb(20, 20, 20);  /* new but only for firefox*/
 }
 
 #content {
     color: #a7b3c1;
+    background-color: #282c35;
 }
 
-#content a {
+ a {
     color: rgb(0, 162, 255);
 }
 

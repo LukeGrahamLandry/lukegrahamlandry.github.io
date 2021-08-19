@@ -178,11 +178,12 @@ Register your armor items like normal using the `ArmorItem` class. It needs a re
 ### Assets
 
 In `/src/main/resources/assets/modid/textures` make a new folder called `models` and in that one called `armor`. Here you will put the texture map for your armor. It's sort of a weird format, they look like this: 
-![](__GHOST_URL__/content/images/2021/05/image.png)template_layer_1.png![](__GHOST_URL__/content/images/2021/05/image-1.png)template_layer_2
+![](/img/template_layer_1.png)template_layer_1.png![](/img/template_layer_2.png)template_layer_2
 Use those exact templates because the positioning is important, they should be 512 by 256 (but it's the 1:2 ratio that matters). The first one must be named `name_layer_1.png` and is for the helmet and chest plate. The second must be named `name_layer_2.png` and is leggings and boots. Of course, replace `name` with the string you used in your armor material (without the `modid:` prefix). So for me it's `pink_layer_1.png` and `pink_layer_2.png`. 
 
 The other assets (model json & lang) are the same as for normal items. 
-![](__GHOST_URL__/content/images/2021/05/Screen-Shot-2021-05-18-at-12.42.22-PM.png)
+![](/img/armor.png)
+
 ## Advanced Armor
 
 Let's make a fresh piece of armor to experiment with. I'll use the same material as before because I'm lazy but you should make a new one if you want unique stats and appearance. Instead of being a normal `ArmorItem` this will be a new class that extends `ArmorItem`.
@@ -286,4 +287,4 @@ You can override `makesPiglinsNeutral` to return true if you want your armor to 
 
 ### Related Tutorials 
 
-- You can make armor with complex 3d models made in BlockBench. This will be covered in a future tutorial. [Join the email list](#/portal/signup/free) to be notified when it is released. 
+- You can make armor with complex 3d models made in BlockBench. This will be covered in a future tutorial. [Join the discord server](https://discord.gg/VbZVnRd) to be notified when it is released. 

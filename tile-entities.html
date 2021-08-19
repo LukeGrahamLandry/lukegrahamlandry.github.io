@@ -6,14 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Modding Tutorial </title>
 
-    <link rel="shortcut icon" href="img/logo.png">
-    <link rel="stylesheet" href="./styles/light-tutorial.css">
+    <link rel="shortcut icon" href="./img/logo.png">
+    <link rel="stylesheet" href="./styles/tutorial.css">
     <link rel="stylesheet" href="./styles/md.css">
+    <link rel="stylesheet" id="theme" href="./styles/tutorial-darkmode.css">
 </head>
 <body>
-    <div class="hide-for-print">
-        <!-- test header -->
-    </div>
+    <div class="hide-for-print" style="max-width: 800px; width: 100%; text-align: left; display: inline-block;">
+        <a href="/" style="font-size: 2rem;">Home</a> 
+        <label class="switch" style="float: right;">
+            <input type="checkbox" id="dark" onclick="updateDarkmode()">
+            <span class="slider round"></span>
+        </label>
+    </div> <br> <br>
 
     
     <div id="content" class="markdown-body">
@@ -150,7 +155,7 @@ public void load(BlockState state, CompoundNBT nbt) {
 </code></pre>
 <p>Note that the nbt keys <code>id</code>, <code>x</code>, <code>y</code>, <code>z</code>, <code>ForgeData</code>, <code>ForgeCaps</code> and the registry name of the tile entity type (for me that's <code>mob_slayer</code>) are reserved for the default data Minecraft has to store about your tile entity. Do not try to use them. </p>
 <h3>Syncing Data</h3>
-<p>With my tile entity, I've been careful to do everything on the server side. If you're doing something more complex, you may have to sync data between the client and the server. There are a few ways to do this. I will cover examples where you need to use these in a later tutorial on doing custom rendering with a tile entity. <a href="#/portal/signup/free">Join the email list</a> to be notified when it is released. </p>
+<p>With my tile entity, I've been careful to do everything on the server side. If you're doing something more complex, you may have to sync data between the client and the server. There are a few ways to do this. I will cover examples where you need to use these in a later tutorial on doing custom rendering with a tile entity. <a href="https://discord.gg/VbZVnRd">Join the discord server</a> to be notified when it is released. </p>
 <p><strong>On chunk load: </strong><code>getUpdateTag()</code> returns the data that the server wants to send as a <code>CompoundNBT</code>. <code>handleUpdateTag(BlockState state, CompoundNBT tag)</code> reads it back on the client side.</p>
 <p><strong>On block update:</strong> gotta use a packet! (but you can use one from vanilla). <code>getUpdatePacket</code> is sent from the server, <code>onDataPacket</code> is read on the client.</p>
 <pre><code>@Override
@@ -167,7 +172,7 @@ public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt){
 }
 </code></pre>
 <p>To trigger that you can call <code>world.notifyBlockUpdate(BlockPos pos, BlockState oldState, BlockState newState, int flags)</code></p>
-<p><strong>Custom packet:</strong> a more versatile solution would be to make your own packets that you can send whenever you want (not just for block updates). I will cover packets in a future tutorial. <a href="#/portal/signup/free">Join the email list</a> to be notified when it is released. </p>
+<p><strong>Custom packet:</strong> a more versatile solution would be to make your own packets that you can send whenever you want (not just for block updates). I will cover packets in a future tutorial. <a href="https://discord.gg/VbZVnRd">Join the discord server</a> to be notified when it is released. </p>
 <h2>Assets</h2>
 <p>The block to which you bound your tile entity is a block like any other. Don't forget to give it a block model, item model, block state definition, loot table and lang entry.</p>
 <h2>Extension</h2>
@@ -219,5 +224,51 @@ public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt){
             </div>
         </a>
     </div>
+
+
+    <script>
+        function setCookie(cname,cvalue,exdays) {
+            var d = new Date();
+            d.setTime(d.getTime() + (exdays*24*60*60*1000));
+            var expires = "expires=" + d.toGMTString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+        function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for(var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return null;
+        }
+        function delCookie(cname){
+            setCookie(cname, "", -1);
+        }
+
+        function updateDarkmode(){
+            let dark = document.getElementById("dark").checked;
+            let sheet;
+            if (dark){
+                sheet = "./styles/tutorial-darkmode.css";
+            } else {
+                sheet = "";
+            }
+            document.getElementById("theme").href = sheet;
+            setCookie("darkmode", sheet, 365);
+        }
+
+        // set darkmode from cookie
+        if (!getCookie("darkmode")) {
+            document.getElementById("dark").checked = false;
+            updateDarkmode();
+        }
+    </script>
 </body>
 </html>

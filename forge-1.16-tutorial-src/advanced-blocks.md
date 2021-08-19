@@ -112,7 +112,7 @@ The `Block` class has lots more methods to play with. Here's a description of a 
 ### Related Tutorials
 
 - [Tile Entities](__GHOST_URL__/tile-entities/): Allows your block to save data and react to every tick. I made mine kill nearby mobs!
--  You can also make your block a point of interest for a custom villager profession. Tutorial for this coming soon! [Join the email list](#/portal/signup/free) to be notified when they are released. 
+-  You can also make your block a point of interest for a custom villager profession. Tutorial for this coming soon! [Join the discord server](https://discord.gg/VbZVnRd) to be notified when they are released. 
 
 ### Rotation
 
@@ -182,7 +182,7 @@ It can be named anything because a single block state definition might need mult
 ## Run the Game
 
 You should now have a fully functional block with custom functionality! 
-![](../img/sad-block.png)
+![](/img/sad-block.png)
 
 ## Extension
 

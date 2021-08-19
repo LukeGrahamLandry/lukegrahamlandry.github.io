@@ -6,14 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Modding Tutorial </title>
 
-    <link rel="shortcut icon" href="img/logo.png">
-    <link rel="stylesheet" href="./styles/light-tutorial.css">
+    <link rel="shortcut icon" href="./img/logo.png">
+    <link rel="stylesheet" href="./styles/tutorial.css">
     <link rel="stylesheet" href="./styles/md.css">
+    <link rel="stylesheet" id="theme" href="./styles/tutorial-darkmode.css">
 </head>
 <body>
-    <div class="hide-for-print">
-        <!-- test header -->
-    </div>
+    <div class="hide-for-print" style="max-width: 800px; width: 100%; text-align: left; display: inline-block;">
+        <a href="/" style="font-size: 2rem;">Home</a> 
+        <label class="switch" style="float: right;">
+            <input type="checkbox" id="dark" onclick="updateDarkmode()">
+            <span class="slider round"></span>
+        </label>
+    </div> <br> <br>
 
     
     <div id="content" class="markdown-body">
@@ -107,7 +112,7 @@ public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random
 <h3>Related Tutorials</h3>
 <ul>
 <li><a href="__GHOST_URL__/tile-entities/">Tile Entities</a>: Allows your block to save data and react to every tick. I made mine kill nearby mobs!</li>
-<li>You can also make your block a point of interest for a custom villager profession. Tutorial for this coming soon! <a href="#/portal/signup/free">Join the email list</a> to be notified when they are released. </li>
+<li>You can also make your block a point of interest for a custom villager profession. Tutorial for this coming soon! <a href="https://discord.gg/VbZVnRd">Join the discord server</a> to be notified when they are released. </li>
 </ul>
 <h3>Rotation</h3>
 <p>To make the block rotatable like a furnace, you have to add a property to the block state so you can tell the model file which sides to render where. It will hold a value of <code>NORTH</code>, <code>SOUTH</code>, <code>EAST</code>, or <code>WEST</code> which represents the direction it is facing. First create the property as a static field in your block class. </p>
@@ -167,7 +172,7 @@ public BlockState getStateForPlacement(BlockItemUseContext context) {
 </blockquote>
 <h2>Run the Game</h2>
 <p>You should now have a fully functional block with custom functionality! 
-<img alt="" src="../img/sad-block.png" /></p>
+<img alt="" src="/img/sad-block.png" /></p>
 <h2>Extension</h2>
 <ul>
 <li>
@@ -225,5 +230,51 @@ public BlockState getStateForPlacement(BlockItemUseContext context) {
             </div>
         </a>
     </div>
+
+
+    <script>
+        function setCookie(cname,cvalue,exdays) {
+            var d = new Date();
+            d.setTime(d.getTime() + (exdays*24*60*60*1000));
+            var expires = "expires=" + d.toGMTString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+        function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for(var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return null;
+        }
+        function delCookie(cname){
+            setCookie(cname, "", -1);
+        }
+
+        function updateDarkmode(){
+            let dark = document.getElementById("dark").checked;
+            let sheet;
+            if (dark){
+                sheet = "./styles/tutorial-darkmode.css";
+            } else {
+                sheet = "";
+            }
+            document.getElementById("theme").href = sheet;
+            setCookie("darkmode", sheet, 365);
+        }
+
+        // set darkmode from cookie
+        if (!getCookie("darkmode")) {
+            document.getElementById("dark").checked = false;
+            updateDarkmode();
+        }
+    </script>
 </body>
 </html>

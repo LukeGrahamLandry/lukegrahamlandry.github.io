@@ -6,14 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Modding Tutorial </title>
 
-    <link rel="shortcut icon" href="img/logo.png">
-    <link rel="stylesheet" href="./styles/light-tutorial.css">
+    <link rel="shortcut icon" href="./img/logo.png">
+    <link rel="stylesheet" href="./styles/tutorial.css">
     <link rel="stylesheet" href="./styles/md.css">
+    <link rel="stylesheet" id="theme" href="./styles/tutorial-darkmode.css">
 </head>
 <body>
-    <div class="hide-for-print">
-        <!-- test header -->
-    </div>
+    <div class="hide-for-print" style="max-width: 800px; width: 100%; text-align: left; display: inline-block;">
+        <a href="/" style="font-size: 2rem;">Home</a> 
+        <label class="switch" style="float: right;">
+            <input type="checkbox" id="dark" onclick="updateDarkmode()">
+            <span class="slider round"></span>
+        </label>
+    </div> <br> <br>
 
     
     <div id="content" class="markdown-body">
@@ -177,10 +182,10 @@
 </code></pre>
 <h3>Assets</h3>
 <p>In <code>/src/main/resources/assets/modid/textures</code> make a new folder called <code>models</code> and in that one called <code>armor</code>. Here you will put the texture map for your armor. It's sort of a weird format, they look like this: 
-<img alt="" src="__GHOST_URL__/content/images/2021/05/image.png" />template_layer_1.png<img alt="" src="__GHOST_URL__/content/images/2021/05/image-1.png" />template_layer_2
+<img alt="" src="/img/template_layer_1.png" />template_layer_1.png<img alt="" src="/img/template_layer_2.png" />template_layer_2
 Use those exact templates because the positioning is important, they should be 512 by 256 (but it's the 1:2 ratio that matters). The first one must be named <code>name_layer_1.png</code> and is for the helmet and chest plate. The second must be named <code>name_layer_2.png</code> and is leggings and boots. Of course, replace <code>name</code> with the string you used in your armor material (without the <code>modid:</code> prefix). So for me it's <code>pink_layer_1.png</code> and <code>pink_layer_2.png</code>. </p>
 <p>The other assets (model json &amp; lang) are the same as for normal items. 
-<img alt="" src="__GHOST_URL__/content/images/2021/05/Screen-Shot-2021-05-18-at-12.42.22-PM.png" /></p>
+<img alt="" src="/img/armor.png" /></p>
 <h2>Advanced Armor</h2>
 <p>Let's make a fresh piece of armor to experiment with. I'll use the same material as before because I'm lazy but you should make a new one if you want unique stats and appearance. Instead of being a normal <code>ArmorItem</code> this will be a new class that extends <code>ArmorItem</code>.</p>
 <pre><code>public static final RegistryObject&lt;Item&gt; FLAMING_CHESTPLATE = ITEMS.register("flaming_chestplate",
@@ -263,7 +268,7 @@ public boolean makesPiglinsNeutral(ItemStack stack, LivingEntity wearer) {
 </code></pre>
 <h3>Related Tutorials</h3>
 <ul>
-<li>You can make armor with complex 3d models made in BlockBench. This will be covered in a future tutorial. <a href="#/portal/signup/free">Join the email list</a> to be notified when it is released. </li>
+<li>You can make armor with complex 3d models made in BlockBench. This will be covered in a future tutorial. <a href="https://discord.gg/VbZVnRd">Join the discord server</a> to be notified when it is released. </li>
 </ul> 
     </div>
     
@@ -304,5 +309,51 @@ public boolean makesPiglinsNeutral(ItemStack stack, LivingEntity wearer) {
             </div>
         </a>
     </div>
+
+
+    <script>
+        function setCookie(cname,cvalue,exdays) {
+            var d = new Date();
+            d.setTime(d.getTime() + (exdays*24*60*60*1000));
+            var expires = "expires=" + d.toGMTString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+        function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for(var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return null;
+        }
+        function delCookie(cname){
+            setCookie(cname, "", -1);
+        }
+
+        function updateDarkmode(){
+            let dark = document.getElementById("dark").checked;
+            let sheet;
+            if (dark){
+                sheet = "./styles/tutorial-darkmode.css";
+            } else {
+                sheet = "";
+            }
+            document.getElementById("theme").href = sheet;
+            setCookie("darkmode", sheet, 365);
+        }
+
+        // set darkmode from cookie
+        if (!getCookie("darkmode")) {
+            document.getElementById("dark").checked = false;
+            updateDarkmode();
+        }
+    </script>
 </body>
 </html>
