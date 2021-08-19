@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Modding Tutorial </title>
+
+    <link rel="shortcut icon" href="img/logo.png">
+    <link rel="stylesheet" href="./styles/light-tutorial.css">
+    <link rel="stylesheet" href="./styles/md.css">
+</head>
+<body>
+    <div class="hide-for-print">
+        test header
+    </div>
+
+    
+    <div id="content" class="markdown-body">
+        <p>Make a tile entity that kills nearby mobs.  </p>
+<p>A tile entity is a simplified version of an entity that is bound to a specific block the the world. It knows its position, can react to ticks and saves data when the world is reloaded. Some vanilla examples are chests, furnaces and beacons. </p>
+<h2>Init</h2>
+<p>Start by making a block for your tile entity. It will have its own class just like we made for other advanced blocks in the last tutorial. </p>
+<pre><code>public static final RegistryObject&lt;Block&gt; MOB_SLAYER = BLOCKS.register("mob_slayer",
+            () -&gt; new MobSlayerBlock(Block.Properties.copy(Blocks.IRON_BLOCK)));
+</code></pre>
+<p>Then you will need to register your tile entity. Make a new class called <code>TileEntityInit</code>. We will start by getting a deferred register just like for blocks and items. </p>
+<pre><code>public class TileEntityInit {
+    public static final DeferredRegister&lt;TileEntityType&lt;?&gt;&gt; TILE_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, FirstModMain.MOD_ID);
+}
+</code></pre>
+<p>Then register your tile entity. The string you pass in is the registry name which can be anything you want (all lower case, no weird characters as usual). Then you need a supplier for a <code>TileEntityType</code> which has a builder to use. The builder takes a supplier to make new instance of your tile entity. For this, use a method reference to the constructor of your tile entity class (we'll make this class in the next step). Then you need to tell it the types of blocks that your tile entity is allowed to be bound to. I'll just have one (the block we made earlier) but you can have multiple, just separate them with commas. Then we call the <code>build</code> method of the builder to get the type. </p>
+<pre><code>public static final RegistryObject&lt;TileEntityType&lt;MobSlayerTile&gt;&gt; MOB_SLAYER = TILE_ENTITY_TYPES.register("mob_slayer",
+            () -&gt; TileEntityType.Builder.of(MobSlayerTile::new, BlockInit.MOB_SLAYER.get()).build(null));
+</code></pre>
+<p>The null argument passed to the build method is a "data fixer type". Honestly, I have no idea what that means. It seems to not be used for anything and leaving it null has always worked for me. If you happen to know what it does, please let me know, I'm curious. </p>
+<p>Like with the item and block registries, you have to tell minecraft that you're trying to register things. Add this line to the constructor of your main class:</p>
+<pre><code>TileEntityInit.TILE_ENTITY_TYPES.register(modEventBus);
+</code></pre>
+<h2>Block Class</h2>
+<p>There are two methods you need to override on your block to add your tile entity. <code>hasTileEntity</code> should simply return true and <code>createTileEntity</code> should return a new instance of your tile entity. I'm using the tile entity type's <code>create</code> method but you could directly call the constructor once you make your tile entity class).</p>
+<pre><code>public class MobSlayerBlock extends Block {
+    public MobSlayerBlock(AbstractBlock.Properties props) {
+        super(props);
+    }
+
+    @Override
+    public boolean hasTileEntity(BlockState state) {
+        return true;
+    }
+
+    @Override
+    public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+        return TileEntityInit.MOB_SLAYER.get().create();
+    }
+}
+</code></pre>
+<h2>Tile Class</h2>
+<p>Now create the tile entity class you referenced earlier (make a new <code>tile</code> package to keep organized). As you may have guessed, the class will extend <code>TileEntity</code>. Pass your tile entity type to the super constructor. </p>
+<pre><code>public class MobSlayerTile extends TileEntity {
+    public MobSlayerTile() {
+        super(TileEntityInit.MOB_SLAYER.get());
+    }
+}
+</code></pre>
+<h3>Tick</h3>
+<p>To react to ticks, your tile entity must implement <code>ITickableTileEntity</code>. The <code>tick</code> method will be called every tick. </p>
+<pre><code>public class MobSlayerTile extends TileEntity implements ITickableTileEntity {
+    public MobSlayerTile() {
+        super(TileEntityInit.MOB_SLAYER.get());
+    }
+
+    @Override
+    public void tick() {
+        // do stuff here
+    }
+}
+</code></pre>
+<p>You can do anything you want here but I want my tile entity to kill nearby monsters. I'll start by writing some logic for when to hurt the mobs. </p>
+<p>I'll need a <code>timer</code> field (because I don't want to deal damage every tick, that would be too op) and an <code>isActive</code> field (because I want the player to be able to turn it off sometimes). So I'll check that we're on the server side (because that's where logic like dealing damage should be processed) and that the tile should be active. Then, each tick I'll increment the timer and only if 20 ticks (1 second) has passed since last time, I'll reset the timer and call a <code>hurtMobs</code> method (that I haven't defined yet). </p>
+<pre><code>int timer = 0;
+boolean isActive = true;
+
+@Override
+public void tick() {
+    if (!this.level.isClientSide() &amp;&amp; this.isActive){
+        this.timer++;
+        if (this.timer &gt; 20){
+            this.timer = 0;
+
+            this.hurtMobs();
+        }
+    }
+}
+</code></pre>
+<p>I'll start by deciding the top left and bottom right corner of the area I want to target. I'll do this by adding the my chosen range to all the coordinates of the tile entity to get the top and subtracting to get the bottom. Then I'll make an <code>AxisAlignedBB</code> from these points. This represents a cube centered on my tile entity going out <code>RANGE</code> blocks in all 3 dimensions. </p>
+<p>Then I'll use the world's <code>getEntities</code> method to get all the entities within that area of effect. The first argument is an entity to ignore (arrows use this to not hit themselves) but I want to get everything so I'll leave it null. The second argument is obviously the <code>AxisAlignedBB</code> to get entities within. Then I'll loop through the list it returns. For each entity, I'll check that it is living (not an arrow, item, etc) and not a player (I don't want my new tile to hurt me!). If it meets my criteria, I'll deal one heart of magic damage. </p>
+<pre><code>final int RANGE = 5;
+private void hurtMobs() {
+    BlockPos topCorner = this.worldPosition.offset(RANGE, RANGE, RANGE);
+    BlockPos bottomCorner = this.worldPosition.offset(-RANGE, -RANGE, -RANGE);
+    AxisAlignedBB box = new AxisAlignedBB(topCorner, bottomCorner);
+
+    List&lt;Entity&gt; entities = this.level.getEntities(null, box);
+    for (Entity target : entities){
+        if (target instanceof LivingEntity &amp;&amp; !(target instanceof PlayerEntity)){
+            target.hurt(DamageSource.MAGIC, 2);
+        }
+    }
+}
+</code></pre>
+<p>Note: instead of doing that check in the for loop, I could have passed in a <code>Predicate&lt;Entity&gt;</code> which would return true only if it was something I want to target. That would probably run faster but not significantly enough to matter and I have a personal preference for how I did it. </p>
+<h3>Processing Block Interactions</h3>
+<p>I want to be able to toggle my mob slayer on and off by right clicking the block. I'll start by making a function that will preform the toggle. </p>
+<pre><code>public void toggle(){
+    this.isActive = !this.isActive;
+}
+</code></pre>
+<p>Then I need my block to notify my tile entity when it is right clicked. I'll override the <code>use</code> method as we did in the last tutorial. After checking that I'm on the server side and processing the main hand (so it doesn't get called twice), I'll get the tile entity at that position. To be safe, I'll check that it's the right type of tile entity but in practice it always will be. I'll cast it to my tile entity class and call the <code>toggle</code> method. For dramatic effect (and so its easier to tell that our click was processed), I'll make it play a sound as well. </p>
+<pre><code>@Override
+public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+    if (!world.isClientSide() &amp;&amp; hand == Hand.MAIN_HAND ){
+        TileEntity tile = world.getBlockEntity(pos);
+        if (tile instanceof MobSlayerTile){
+            ((MobSlayerTile) tile).toggle();
+            world.playSound(player, player.getX(), player.getY(), player.getZ(), SoundEvents.ANVIL_LAND, SoundCategory.PLAYERS, 1.0F, 1.0F);
+            return ActionResultType.SUCCESS;
+        }
+    }
+
+    return super.use(state, world, pos, player, hand, hit);
+}
+</code></pre>
+<h3>NBT Data</h3>
+<p>Currently, when I save the world and reload it, the <code>isActive</code> variable will default back to true. We can override a few methods to save it with the rest of the world's data. </p>
+<p>The format Minecraft uses for most of the data it saves is called NBT (<a href="https://minecraft.fandom.com/wiki/NBT_format">Named Binary Tag</a>). This is basically a map of keys and values (just like a more limited version of a <code>HashMap</code>) that can easily be serialized to a binary representation to store in files. </p>
+<p>In code, the class that is used for this format is <code>CompoundNBT</code>. There are many types of data you can store in an <code>NBTCompound</code>: <code>boolean</code>, <code>int</code>, <code>String</code>, <code>double</code>, <code>float</code>, <code>long</code>, an array of <code>long</code>s, <code>byte</code>, an <code>INBT</code> (like another <code>CompoundNBT</code> or a <code>ListNBT</code>). You've got all the primitives and more so with enough effort you can make an nbt representation for any object. The general methods to use are <code>compoundNBT.putType(key, value)</code>, <code>compoundNBT.getType(key)</code> and <code>compundNBT.contains(key)</code>. The key is always a <code>String</code> and the value can be any supported type (just change the method name, ie <code>getString</code>, etc).</p>
+<p>Tile entities use the <code>save</code> method to get the data to store as a <code>CompoundNBT</code> when the world is saved and <code>load</code> to read back that nbt into normal variables. I'll use this to simply store my <code>isActive</code> field and read it back. Make sure to call the super methods to let Minecraft store the tile entity's base data. </p>
+<pre><code>@Override
+public CompoundNBT save(CompoundNBT nbt) {
+    nbt.putBoolean("active", this.isActive);
+    return super.save(nbt);
+}
+
+@Override
+public void load(BlockState state, CompoundNBT nbt) {
+    super.load(state, nbt);
+    this.isActive = nbt.getBoolean("active");
+}
+</code></pre>
+<p>Note that the nbt keys <code>id</code>, <code>x</code>, <code>y</code>, <code>z</code>, <code>ForgeData</code>, <code>ForgeCaps</code> and the registry name of the tile entity type (for me that's <code>mob_slayer</code>) are reserved for the default data Minecraft has to store about your tile entity. Do not try to use them. </p>
+<h3>Syncing Data</h3>
+<p>With my tile entity, I've been careful to do everything on the server side. If you're doing something more complex, you may have to sync data between the client and the server. There are a few ways to do this. I will cover examples where you need to use these in a later tutorial on doing custom rendering with a tile entity. <a href="#/portal/signup/free">Join the email list</a> to be notified when it is released. </p>
+<p><strong>On chunk load: </strong><code>getUpdateTag()</code> returns the data that the server wants to send as a <code>CompoundNBT</code>. <code>handleUpdateTag(BlockState state, CompoundNBT tag)</code> reads it back on the client side.</p>
+<p><strong>On block update:</strong> gotta use a packet! (but you can use one from vanilla). <code>getUpdatePacket</code> is sent from the server, <code>onDataPacket</code> is read on the client.</p>
+<pre><code>@Override
+public SUpdateTileEntityPacket getUpdatePacket(){
+    CompoundNBT nbtTag = new CompoundNBT();
+    // save data to nbt 
+    return new SUpdateTileEntityPacket(this.worldPosition, -1, nbtTag);
+}
+
+@Override
+public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt){
+    CompoundNBT tag = pkt.getNbtCompound();
+    // read data
+}
+</code></pre>
+<p>To trigger that you can call <code>world.notifyBlockUpdate(BlockPos pos, BlockState oldState, BlockState newState, int flags)</code></p>
+<p><strong>Custom packet:</strong> a more versatile solution would be to make your own packets that you can send whenever you want (not just for block updates). I will cover packets in a future tutorial. <a href="#/portal/signup/free">Join the email list</a> to be notified when it is released. </p>
+<h2>Assets</h2>
+<p>The block to which you bound your tile entity is a block like any other. Don't forget to give it a block model, item model, block state definition, loot table and lang entry.</p>
+<h2>Extension</h2>
+<ul>
+<li>Make the mob slayer we made in this tutorial directional. That is, instead of the area of effect being centered on the block, have the block rotateable from like the last tutorial and only attack mobs in the forwards direction.</li>
+<li>
+<p>Make a tile entity that teleports nearby mobs on top of it</p>
+</li>
+<li>
+<p>hint: <code>entity.setPos(x, y, z);</code></p>
+</li>
+</ul> 
+    </div>
+    
+
+    <div class="hide-for-print">
+
+
+        If you have any questions or suggestions, don't hesitate to ask me on [discord](https://discord.gg/VbZVnRd).
+
+        Also, the full code for all my tutorials is available on [github](https://github.com/LukeGrahamLandry/forge-modding-tutorial/tree/1.16.5).
+
+        <a href="https://github.com/LukeGrahamLandry/forge-modding-tutorial">
+            <div class="app">
+                <img src="./img/github.png" style="width: 70px">
+            </div>
+        </a>
+
+        <a href="https://discord.gg/VbZVnRd">
+            <div class="app">
+                <img src="./img/discord.png" style="width: 70px">
+            </div>
+        </a>
+
+        <!--
+        <a href="https://www.youtube.com/playlist?list=PLxBLp3RqmUMEU5vrtMY6tgfP2lnJD0OUj">
+            <div class="app">
+                <img src="img/youtube.png" style="width: 70px">
+            </div>
+        </a>
+        -->
+
+        <a href="https://www.patreon.com/LukeGrahamLandry">
+            <div class="app">
+                <img src="../img/patreon.png" style="width: 70px">
+            </div>
+        </a>
+    </div>
+</body>
+</html>

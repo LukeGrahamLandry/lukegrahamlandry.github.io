@@ -1,0 +1,46 @@
+body {
+    text-align: center;
+}
+
+#content {
+    text-align: left;
+    max-width: 800px;
+    width: 100%;
+    display: inline-block;
+    font-size: 12pt;
+
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 45px;
+    box-sizing: border-box;
+}
+
+#raw-text {
+    color: blue;
+}
+
+.app {
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    font-weight: bold;
+    margin: 0.5rem;
+    padding: 0.5rem;
+    display: inline-block;
+}
+
+#tutorial-select {
+    max-width: 500px;
+    width: 85%;
+}
+
+@media print {
+    #content {
+        font-size: 10pt;
+        color: black;
+        background-color: white;
+    }
+    .hide-for-print {
+        display: none !important;
+    }
+}

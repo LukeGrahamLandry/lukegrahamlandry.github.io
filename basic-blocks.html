@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Modding Tutorial </title>
+
+    <link rel="shortcut icon" href="img/logo.png">
+    <link rel="stylesheet" href="./styles/light-tutorial.css">
+    <link rel="stylesheet" href="./styles/md.css">
+</head>
+<body>
+    <div class="hide-for-print">
+        test header
+    </div>
+
+    
+    <div id="content" class="markdown-body">
+        <p>In this tutorial we will register a simple block with a texture and a loot table. It will be a similar process to basic items.</p>
+<h2>Concepts</h2>
+<p>Blocks are very similar to items. They must be registered so the game knows about them. Each type block is an instance of the <code>Block</code> class (not each physical block in the world). Basic traits of your block can be set with a properties object but more complex behaviour will require your own class that extends <code>Block</code>. </p>
+<h2>New Block</h2>
+<p>In your init package make a new class called BlockInit. The code here is mostly the same as in ItemInit. Just make sure to say Block instead of Item everywhere. The string you pass the register function is the block's registry name which will be used for naming asset files later.</p>
+<pre><code>public class BlockInit {
+    public static final DeferredRegister&lt;Block&gt; BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, FirstModMain.MOD_ID);
+
+    public static final RegistryObject&lt;Block&gt; SMILE_BLOCK = BLOCKS.register("smile_block",
+            () -&gt; new Block());
+}
+</code></pre>
+<p>The Block constructer in the supplier takes a Block.Properties object made by calling the <code>Block.Properties.of</code>  method. This takes a Material which sets a few characteristics about your block like whether its flammable, how it reacts to pistons, default sounds, whether it blocks player motion, and what tools can mine it by default. Vanilla has many options to chose from, just let your IDE autocomplete from <code>Material</code>.</p>
+<p>Then your <code>Properties</code> object has many other methods you can call to set different traits, just like we did with items. <code>strength</code> lets you pass in how long it takes to break and how resistant to explosions it is. <code>harvestLevel</code> sets what level of tool you need to mine it (0 is wood, 4 is netherite) and <code>harvestTool</code> lets you set what type of tool you need. You have to call <code>requiresCorrectToolForDrops</code> if it should be like stone and drop nothing without the tool.  If you want it to be a light source you can use lightLevel with a lambda expression that maps a blockstate to a value from 1 to 16. There are many more like <code>friction</code> (used by ice), <code>speedFactor</code> (used by soul sand) and <code>jumpFactor</code> (used by honey). So that supplier might looks something like this:</p>
+<pre><code>() -&gt; new Block(Block.Properties.of(Material.STONE).strength(4f, 1200f).harvestLevel(2).harvestTool(ToolType.PICKAXE).requiresCorrectToolForDrops().lightLevel((state) -&gt; 15))
+</code></pre>
+<p>You can also use <code>AbstractBlock.Properties.*copy*(ANOTHER_BLOCK)</code> to avoid writing things out repeatedly. All vanilla blocks can be accessed with <code>Blocks.INSERT_NAME_HERE</code> so you can copy properties from one of them if you feel like it.</p>
+<h2>Block Item</h2>
+<p>You need a BlockItem to place your block. You can register it manually but that's tedious so lets make it automatic. At the top of your class add this line to allow it to subscribe to events.</p>
+<pre><code>@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+public class BlockInit {
+    // ...previous code here...
+}
+</code></pre>
+<p>Then make a static function with the SubscribeEvent annotation. Its argument will be the Item RegistryEvent so it fires when items are supposed to be registered.</p>
+<p>In that function get the Item registry and loop through all the blocks. For each block, we make an Item.Properties that puts it in our creative tab. Then we make a BlockItem with those properties to place our block. We register the BlockItem with the same registry name as the block.</p>
+<pre><code>@SubscribeEvent
+public static void onRegisterItems(final RegistryEvent.Register&lt;Item&gt; event) {
+    final IForgeRegistry&lt;Item&gt; registry = event.getRegistry();
+
+    BLOCKS.getEntries().stream().map(RegistryObject::get).forEach( (block) -&gt; {
+        final Item.Properties properties = new Item.Properties().tab(ItemInit.ModCreativeTab.instance);
+        final BlockItem blockItem = new BlockItem(block, properties);
+        blockItem.setRegistryName(block.getRegistryName());
+        registry.register(blockItem);
+    });
+}
+</code></pre>
+<p>Instead of doing it this way you could manually register a BlockItem for each of your blocks in your ItemInit class but that's really tedious so I'd advise doing it this way. There might be some blocks you make later where you'll what a unique block item. All you'd have to do is add an if statement to check for that block and create the new BlockItem differently. </p>
+<h2>Main Class</h2>
+<p>In the constructor of your main class add this line to call the register method of your DeferredRegister (same as for items).</p>
+<pre><code>BlockInit.BLOCKS.register(modEventBus);
+</code></pre>
+<h2>Assets</h2>
+<p>In your project folder go to <code>src/main/resources/assets/mod id</code>. Make a new folder called blockstates and in your models folder make a new folder called block. In textures make a new folder called blocks and put the png image you want to use for your block's texture. Then go out to <code>src/main/resources/data/mod id</code> and make a folder called loot_tables and in that make a folder called blocks.</p>
+<p>In blockstates make a file called block_name.json (replace block_name with whatever string you passed in as your registry name). Since this is a simple block, we just need one varient that points to a model. Make sure you change firstmod to your mod id and smile_block to the registry name of your block.</p>
+<pre><code>{
+    "variants": {
+        "": {
+            "model": "firstmod:block/smile_block"
+        }
+    }
+}
+</code></pre>
+<p>This is the simplest possible blockstate definition. More complex blocks can have different sides (like grass), rotation (like furnaces and chests), age (like crops or ice) and you can define your own custom properties. The possibilities are endless and will likely be discussed more in depth in another tutorial. </p>
+<p>In models/block make a file called block_name.json. This is the file you'd change if you want different sides of the block to look different (like a grass block) but since I don't, I'll just point to one texture (make sure to change smile_block to the name of your image file).</p>
+<pre><code>{
+    "parent": "block/cube_all",
+    "textures": {
+        "all": "firstmod:blocks/smile_block"
+    }
+}
+</code></pre>
+<p>In models/item make a block_name.json file that just parents off your block model</p>
+<pre><code>{
+    "parent": "firstmod:block/smile_block"
+}
+</code></pre>
+<p>In lang/en_us.json add a line that gives your block a name. Remember to change the mod id and block registry name.</p>
+<pre><code>    "block.firstmod.smile_block": "Smiley Block"
+</code></pre>
+<p>In loot_tables/blocks make block_name.json. This sets what drops when you break the block. This is a simple loot table that just drops the block's item but it could be anything.</p>
+<pre><code>{
+    "type": "minecraft:block",
+    "pools": [
+    {
+        "rolls": 1.0,
+        "entries": [
+        {
+            "type": "minecraft:item",
+            "name": "firstmod:smile_block"
+        }
+        ]
+    }
+    ]
+}
+</code></pre>
+<p>Loot tables are also how drops from entities are determined and what you find in chests. They deserve a tutorial of their own but in the mean time, take a look at <a href="https://github.com/InventivetalentDev/minecraft-assets/tree/1.16.5/data/minecraft/loot_tables/blocks">vanilla's loot tables</a> and <a href="https://minecraft.fandom.com/wiki/Loot_table">the wiki</a> for inspiration.</p>
+<p>You should end up with a file structure like this:</p>
+<pre><code>- src/main/resources/
+    - assets/modid/
+        - blockstates/  
+            - block_name.json  
+        - models/block/  
+            - block_name.json  
+        - textures/blocks/
+            - block_name.png  
+    - data/modid/  
+        - loot_tables/blocks  
+            - block_name.json
+</code></pre>
+<h2>Run the game</h2>
+<p>If we run the game, we can see that the block shows up in our creative tab. We can place it and break it with an iron pickaxe</p> 
+    </div>
+    
+
+    <div class="hide-for-print">
+
+
+        If you have any questions or suggestions, don't hesitate to ask me on [discord](https://discord.gg/VbZVnRd).
+
+        Also, the full code for all my tutorials is available on [github](https://github.com/LukeGrahamLandry/forge-modding-tutorial/tree/1.16.5).
+
+        <a href="https://github.com/LukeGrahamLandry/forge-modding-tutorial">
+            <div class="app">
+                <img src="./img/github.png" style="width: 70px">
+            </div>
+        </a>
+
+        <a href="https://discord.gg/VbZVnRd">
+            <div class="app">
+                <img src="./img/discord.png" style="width: 70px">
+            </div>
+        </a>
+
+        <!--
+        <a href="https://www.youtube.com/playlist?list=PLxBLp3RqmUMEU5vrtMY6tgfP2lnJD0OUj">
+            <div class="app">
+                <img src="img/youtube.png" style="width: 70px">
+            </div>
+        </a>
+        -->
+
+        <a href="https://www.patreon.com/LukeGrahamLandry">
+            <div class="app">
+                <img src="../img/patreon.png" style="width: 70px">
+            </div>
+        </a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Modding Tutorial </title>
+
+    <link rel="shortcut icon" href="img/logo.png">
+    <link rel="stylesheet" href="./styles/light-tutorial.css">
+    <link rel="stylesheet" href="./styles/md.css">
+</head>
+<body>
+    <div class="hide-for-print">
+        test header
+    </div>
+
+    
+    <div id="content" class="markdown-body">
+        <p>In this tutorial we make a simple set of tools and armor. We also make an armor piece that reacts to ticks and being attacked.</p>
+<h2>Tools</h2>
+<p>Tools are simply items that use special classes instead of the basic <code>Item</code>.</p>
+<h3>Material</h3>
+<p>Start by defining the base stats for your tier of tools. The mining level (0 is wood, 4 is netherite), durability, mining speed, damage, <a href="https://minecraft.fandom.com/wiki/Enchanting_mechanics#How_enchantments_are_chosen">enchantability</a>, and an <code>Ingredient</code> which defines which items may be used to repair your tools in an anvil.</p>
+<p>You must do this in a class that implements <code>IItemTier</code>. The simplest way to do this is to just copy vanilla's <code>ItemTier</code> enum and just redefine the tiers. Put this class in your <code>util</code> package. You can change the values used to initialize your tier to suit your liking and make multiple by separating them with commas. </p>
+<pre><code>public enum ModItemTier implements IItemTier {
+    PINK(3, 3000, 10.0F, 5.0F, 5, () -&gt; {
+        return Ingredient.of(ItemInit.SMILE.get());
+    });
+
+    private final int level;
+    private final int uses;
+    private final float speed;
+    private final float damage;
+    private final int enchantmentValue;
+    private final LazyValue&lt;Ingredient&gt; repairIngredient;
+
+    ModItemTier(int level, int durability, float miningSpeed, float damage, int enchantability, Supplier&lt;Ingredient&gt; repairIngredient) {
+        this.level = level;
+        this.uses = durability;
+        this.speed = miningSpeed;
+        this.damage = damage;
+        this.enchantmentValue = enchantability;
+        this.repairIngredient = new LazyValue&lt;&gt;(repairIngredient);
+    }
+
+    public int getUses() {
+        return this.uses;
+    }
+
+    public float getSpeed() {
+        return this.speed;
+    }
+
+    public float getAttackDamageBonus() {
+        return this.damage;
+    }
+
+    public int getLevel() {
+        return this.level;
+    }
+
+    public int getEnchantmentValue() {
+        return this.enchantmentValue;
+    }
+
+    public Ingredient getRepairIngredient() {
+        return this.repairIngredient.get();
+    }
+}
+</code></pre>
+<h3>Init</h3>
+<p>Now you have to register your tools in <code>ItemInit</code> just like any other item. Each type of tool has its own class (<code>SwordItem</code>, <code>PickaxeItem</code>, etc). The item constructor takes a reference to the <code>IItemTier</code> you defined earlier, a damage value to add to the base damage from the tier, an attack speed value which is added to a default of 4 to get the final speed of the item's swings (so should probably be negative, -2 is faster than -1) and finally an <code>Item.Properties</code> just like your other items. </p>
+<pre><code>public static final RegistryObject&lt;Item&gt; PINK_SWORD = ITEMS.register("pink_sword",
+            () -&gt; new SwordItem(ModItemTier.PINK, 3, -2.4F, new Item.Properties().tab(ModCreativeTab.instance)));
+
+    public static final RegistryObject&lt;Item&gt; PINK_PICKAXE = ITEMS.register("pink_pickaxe",
+            () -&gt; new PickaxeItem(ModItemTier.PINK,1, -1.0F, new Item.Properties().tab(ModCreativeTab.instance)));
+
+    public static final RegistryObject&lt;Item&gt; PINK_AXE = ITEMS.register("pink_axe",
+            () -&gt; new AxeItem(ModItemTier.PINK, 6, -3.4F, new Item.Properties().tab(ModCreativeTab.instance)));
+
+    public static final RegistryObject&lt;Item&gt; PINK_SHOVEL = ITEMS.register("pink_shovel",
+            () -&gt; new ShovelItem(ModItemTier.PINK, 1, -1.0F, new Item.Properties().tab(ModCreativeTab.instance)));
+
+    public static final RegistryObject&lt;Item&gt; PINK_HOE = ITEMS.register("pink_hoe",
+            () -&gt; new HoeItem(ModItemTier.PINK, 0, -1.0F, new Item.Properties().tab(ModCreativeTab.instance)));
+</code></pre>
+<h3>Advanced Tools</h3>
+<p>Since they are simply items, you can make your own classes that extend the basic tool classes to give them unique behaviour. You can use the same methods discussed in the <a href="__GHOST_URL__/advanced-items/">advanced items tutorial</a>. Here are some methods that might be interesting:</p>
+<ul>
+<li><code>mineBlock</code>: called when the player breaks a block with the item. You should make sure to call the super method to reduce durability.</li>
+<li><code>isCorrectToolForDrops</code></li>
+<li><code>getDestroySpeed</code> (big numbers are faster)</li>
+<li><code>hurtEnemy</code></li>
+</ul>
+<h3>Assets</h3>
+<p>The assets are the same as any other item (model, texture, lang) except that the model parent should be <code>item/handheld</code> instead of <code>item/generated</code>. This will make it rotate properly in your hand to look like you're holding a tool. </p>
+<h2>Armor</h2>
+<p>Similar to tools, a piece armor is simply an item that uses <code>ArmorItem</code> instead of the basic <code>Item</code>. </p>
+<h3>Material</h3>
+<p>Start by defining the stats for your armor in a class that implements <code>IArmorMaterial</code>. </p>
+<p>The <code>name</code> string you use <strong>must </strong>start with your mod id, then a colon, then anything. The durability number is multiplied by the numbers in the <code>HEALTH_PER_SLOT</code> array to get the durability for each piece. <code>protection</code> is an array of the protection values of each piece (in the order boots, leggings, chest plate, helmet). A full armor bar is when those numbers add up to 20. It needs an <a href="https://minecraft.fandom.com/wiki/Enchanting_mechanics#How_enchantments_are_chosen">enchantability</a> just like tools and a <code>SoundEvent</code> to play when you equip the item. I'm just using a vanilla sound but later we'll learn how to add a custom one. Then you need a <a href="https://minecraft.fandom.com/wiki/Armor#Armor_toughness">toughness</a> which increases how much protection it gives against stronger attacks (only used by diamond and netherite in vanilla). Then knockback resistance (only used by netherite, when all pieces add up to 1 that's no knockback) and finally a supplier for a repair ingredient to use in the anvil.  </p>
+<pre><code>public enum ModArmorMaterial implements IArmorMaterial {
+    PINK(FirstModMain.MOD_ID + ":pink", 20, new int[]{4, 7, 9, 4}, 50, SoundEvents.ARMOR_EQUIP_DIAMOND, 3.0F, 0.1F, () -&gt; { 
+        return Ingredient.of(ItemInit.SMILE.get()); 
+    });
+
+    private static final int[] HEALTH_PER_SLOT = new int[]{13, 15, 16, 11};
+    private final String name;
+    private final int durabilityMultiplier;
+    private final int[] slotProtections;
+    private final int enchantmentValue;
+    private final SoundEvent sound;
+    private final float toughness;
+    private final float knockbackResistance;
+    private final LazyValue&lt;Ingredient&gt; repairIngredient;
+
+    ModArmorMaterial(String name, int durability, int[] protection, int enchantability, SoundEvent sound, float toughness, float knockbackResistance, Supplier&lt;Ingredient&gt; repairIngredient) {
+        this.name = name;
+        this.durabilityMultiplier = durability;
+        this.slotProtections = protection;
+        this.enchantmentValue = enchantability;
+        this.sound = sound;
+        this.toughness = toughness;
+        this.knockbackResistance = knockbackResistance;
+        this.repairIngredient = new LazyValue&lt;&gt;(repairIngredient);
+    }
+
+    public int getDurabilityForSlot(EquipmentSlotType slot) {
+        return HEALTH_PER_SLOT[slot.getIndex()] * this.durabilityMultiplier;
+    }
+
+    public int getDefenseForSlot(EquipmentSlotType slot) {
+        return this.slotProtections[slot.getIndex()];
+    }
+
+    public int getEnchantmentValue() {
+        return this.enchantmentValue;
+    }
+
+    public SoundEvent getEquipSound() {
+        return this.sound;
+    }
+
+    public Ingredient getRepairIngredient() {
+        return this.repairIngredient.get();
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public String getName() {
+        return this.name;
+    }
+
+    public float getToughness() {
+        return this.toughness;
+    }
+
+    public float getKnockbackResistance() {
+        return this.knockbackResistance;
+    }
+}
+</code></pre>
+<h3>Init</h3>
+<p>Register your armor items like normal using the <code>ArmorItem</code> class. It needs a reference to your <code>IArmorMaterial</code>, and <code>EquipmentSlotType</code> (<code>HEAD</code>, <code>CHEST</code>, <code>LEGS</code>, or <code>FEET</code>) and an <code>Item.Properties</code>. </p>
+<pre><code>public static final RegistryObject&lt;Item&gt; PINK_HELMET = ITEMS.register("pink_helmet",
+            () -&gt; new ArmorItem(ModArmorMaterial.PINK, EquipmentSlotType.HEAD, new Item.Properties().tab(ModCreativeTab.instance)));
+
+    public static final RegistryObject&lt;Item&gt; PINK_CHESTPLATE = ITEMS.register("pink_chestplate",
+            () -&gt; new ArmorItem(ModArmorMaterial.PINK, EquipmentSlotType.CHEST, new Item.Properties().tab(ModCreativeTab.instance)));
+
+    public static final RegistryObject&lt;Item&gt; PINK_LEGGINGS = ITEMS.register("pink_leggings",
+            () -&gt; new ArmorItem(ModArmorMaterial.PINK, EquipmentSlotType.LEGS, new Item.Properties().tab(ModCreativeTab.instance)));
+
+    public static final RegistryObject&lt;Item&gt; PINK_BOOTS = ITEMS.register("pink_boots",
+            () -&gt; new ArmorItem(ModArmorMaterial.PINK, EquipmentSlotType.FEET, new Item.Properties().tab(ModCreativeTab.instance)));
+</code></pre>
+<h3>Assets</h3>
+<p>In <code>/src/main/resources/assets/modid/textures</code> make a new folder called <code>models</code> and in that one called <code>armor</code>. Here you will put the texture map for your armor. It's sort of a weird format, they look like this: 
+<img alt="" src="__GHOST_URL__/content/images/2021/05/image.png" />template_layer_1.png<img alt="" src="__GHOST_URL__/content/images/2021/05/image-1.png" />template_layer_2
+Use those exact templates because the positioning is important, they should be 512 by 256 (but it's the 1:2 ratio that matters). The first one must be named <code>name_layer_1.png</code> and is for the helmet and chest plate. The second must be named <code>name_layer_2.png</code> and is leggings and boots. Of course, replace <code>name</code> with the string you used in your armor material (without the <code>modid:</code> prefix). So for me it's <code>pink_layer_1.png</code> and <code>pink_layer_2.png</code>. </p>
+<p>The other assets (model json &amp; lang) are the same as for normal items. 
+<img alt="" src="__GHOST_URL__/content/images/2021/05/Screen-Shot-2021-05-18-at-12.42.22-PM.png" /></p>
+<h2>Advanced Armor</h2>
+<p>Let's make a fresh piece of armor to experiment with. I'll use the same material as before because I'm lazy but you should make a new one if you want unique stats and appearance. Instead of being a normal <code>ArmorItem</code> this will be a new class that extends <code>ArmorItem</code>.</p>
+<pre><code>public static final RegistryObject&lt;Item&gt; FLAMING_CHESTPLATE = ITEMS.register("flaming_chestplate",
+            () -&gt; new FlamingArmorItem(ModArmorMaterial.PINK, EquipmentSlotType.CHEST, new Item.Properties().tab(ModCreativeTab.instance)));
+</code></pre>
+<h3>Tick</h3>
+<p>Make a class for your <code>ArmorItem</code> and override the <code>onArmorTick</code> method. I'll give the wearer 10 seconds of fire resistance (since its done every tick, they'll be immune to fire damage while wearing the armor). It's probably a good idea to make sure you're only doing this on the server side. </p>
+<pre><code>public class FlamingArmorItem extends ArmorItem {
+    public FlamingArmorItem(IArmorMaterial material, EquipmentSlotType slot, Properties properties) {
+        super(material, slot, properties);
+    }
+
+    @Override
+    public void onArmorTick(ItemStack stack, World world, PlayerEntity player) {
+        if (!world.isClientSide()){
+            player.addEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 200));
+        }
+    }
+}
+</code></pre>
+<p>If you want to only do something while they're wearing the full set, you can add a condition in your tick method that checks that each piece of armor matches what it should be. </p>
+<pre><code>boolean fullSet = player.getItemBySlot(EquipmentSlotType.HEAD).getItem() == ItemInit.PINK_HELMET.get() &amp;&amp; &lt;CHEST&gt; &amp;&amp; &lt;LEGS&gt; &amp;&amp; &lt;FEET&gt;;
+if (fullSet){
+    // do something cool here
+}
+</code></pre>
+<p>If all the pieces are from your special class keep in mind that this tick method will be called for each piece. You may want to check the <code>EquipmentSlotType</code> of the item stack that's passed in (by calling <code>stack.getEquipmentSlot()</code>) to avoid repeating behaviour depending what you're doing. </p>
+<h3>On Attacked</h3>
+<p>The <code>ArmorItem</code> class doesn't offer a method to override for this but we can use events instead. Events are a way to let forge know that it should call one of your methods when something specific in the game happens. </p>
+<p>In your <code>util</code> package make an interface called <code>IDamageHandlingArmor</code> with a single method called <code>onDamaged</code>. This will take the entity being attacked, the armor slot being processed, the damage source (which gives you the type of damage and the attacker if applicable). The default implementation will simply return the same damage amount so nothing will change</p>
+<pre><code>public interface IDamageHandlingArmor {
+    default float onDamaged(LivingEntity entity, EquipmentSlotType slot, DamageSource source, float amount){
+        return amount;
+    }
+}
+</code></pre>
+<p>Start by making a package called <code>events</code>. Then make a new class called <code>ArmorHandlers</code> with the <code>EventBusSubscriber</code> annotation. </p>
+<pre><code>@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
+public class ArmorHandlers {
+
+}
+</code></pre>
+<p>Then, in that class make a new method that listens for the <code>LivingDamageEvent</code>. This is done by making a public, static, void method with the <code>@SubscribeEvent</code> annotation. The parameter type defines which event it will listen for. </p>
+<p>This method will get the attacked entity from the event object and loop through each piece of armor it is wearing. For each piece it will check if the item implements our interface and call the <code>onDamaged</code> method if it does. It saves the value returned by that method and sets the damage about on the event. This allows our custom armor to directly effect the damage by changing the return value. </p>
+<pre><code>@SubscribeEvent
+ public static void armorAttackHandler(LivingDamageEvent event){
+        for (ItemStack armor : event.getEntityLiving().getArmorSlots()){
+            if (armor.getItem() instanceof IDamageHandlingArmor){
+                float newDamage = ((IDamageHandlingArmor)armor.getItem()).onDamaged(event.getEntityLiving(), armor.getEquipmentSlot(), event.getSource(), event.getAmount());
+                event.setAmount(newDamage);
+            }
+        }
+    }
+</code></pre>
+<p>Then make your <code>FlamingArmorItem</code> class implement <code>IDamageHandlingArmor</code> and override the <code>onDamaged</code> method. </p>
+<p>Mine will get the attacker from the damager source. If the attacker is living (which doubles as a null check), I'll deal half the damage I would have taken as fire damage, set it on fire for 4 seconds, and reduce the amount of damage I take by half. Otherwise, if there was no attacker (like if it was fall damage), I'll just take the  damage I would normally. </p>
+<pre><code>public class FlamingArmorItem extends ArmorItem implements IDamageHandlingArmor{
+// ...other code here...
+
+    @Override
+    public float onDamaged(LivingEntity entity, EquipmentSlotType slot, DamageSource source, float amount) {
+        Entity attacker = source.getEntity();
+        if (attacker instanceof LivingEntity){
+            attacker.hurt(DamageSource.ON_FIRE, amount / 2);
+            attacker.setSecondsOnFire(4);
+            return amount / 2;
+        } else {
+            return amount;
+        }
+    }
+</code></pre>
+<p>Again, note that <code>onDamaged</code> is called for each armor piece you you may want to add a check on the slot to avoid reacting to an attack multiple times.</p>
+<p>Note that the <code>LivingDamageEvent</code> does not fire for every attack, only those that would deal enough damage to get through your armor. If you want to react to all attacks, you can use the <code>LivingAttackEvent</code> instead. However this does not allow you to change the amount of damage to be dealt. You can only completely cancel the attack (by calling <code>event.setCanceled(true);</code> from your event handler).</p>
+<h3>Piglins</h3>
+<p>You can override <code>makesPiglinsNeutral</code> to return true if you want your armor to act like gold and have piglins ignore the wearer. </p>
+<pre><code>@Override
+public boolean makesPiglinsNeutral(ItemStack stack, LivingEntity wearer) {
+    return true;
+}
+</code></pre>
+<h3>Related Tutorials</h3>
+<ul>
+<li>You can make armor with complex 3d models made in BlockBench. This will be covered in a future tutorial. <a href="#/portal/signup/free">Join the email list</a> to be notified when it is released. </li>
+</ul> 
+    </div>
+    
+
+    <div class="hide-for-print">
+
+
+        If you have any questions or suggestions, don't hesitate to ask me on [discord](https://discord.gg/VbZVnRd).
+
+        Also, the full code for all my tutorials is available on [github](https://github.com/LukeGrahamLandry/forge-modding-tutorial/tree/1.16.5).
+
+        <a href="https://github.com/LukeGrahamLandry/forge-modding-tutorial">
+            <div class="app">
+                <img src="./img/github.png" style="width: 70px">
+            </div>
+        </a>
+
+        <a href="https://discord.gg/VbZVnRd">
+            <div class="app">
+                <img src="./img/discord.png" style="width: 70px">
+            </div>
+        </a>
+
+        <!--
+        <a href="https://www.youtube.com/playlist?list=PLxBLp3RqmUMEU5vrtMY6tgfP2lnJD0OUj">
+            <div class="app">
+                <img src="img/youtube.png" style="width: 70px">
+            </div>
+        </a>
+        -->
+
+        <a href="https://www.patreon.com/LukeGrahamLandry">
+            <div class="app">
+                <img src="../img/patreon.png" style="width: 70px">
+            </div>
+        </a>
+    </div>
+</body>
+</html>

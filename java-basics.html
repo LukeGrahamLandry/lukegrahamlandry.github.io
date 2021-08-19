@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Modding Tutorial </title>
+
+    <link rel="shortcut icon" href="img/logo.png">
+    <link rel="stylesheet" href="./styles/light-tutorial.css">
+    <link rel="stylesheet" href="./styles/md.css">
+</head>
+<body>
+    <div class="hide-for-print">
+        test header
+    </div>
+
+    
+    <div id="content" class="markdown-body">
+        <p>Before you begin trying to make a Minecraft mod, it is important that you are comfortable with the Java programming language. There exist better ways to learn Java for beginners than this document but I'll make an attempt. If you've already got a good understanding of Java, I encourage you to skip this and get started making your mod. Otherwise, if you're already comfortable with another programming language, this will be trivial to learn, if not might be kinda difficult. </p>
+<h2>Data Types</h2>
+<p>In Java, there are two kinds of data types: primitive and<strong> r</strong>eference.</p>
+<p>Primitive data types are the simple building blocks of information your programs can store. Such as, </p>
+<p><code>byte</code>, can store values of <code>-128</code> to <code>127</code>  (1 byte) 
+<code>short</code>, can store value of <code>-32768</code> to <code>32767</code> (2 bytes) 
+<code>int</code>, can store value of <code>-2147483648</code> to <code>2147483647</code> (4 bytes) 
+<code>long</code>, can store value of <code>-9223372036854775808</code> to <code>9223372036854775807</code> (8 bytes)
+<code>char</code>, can store characters (2 bytes) 
+<code>double</code>, can store decimal numbers (8 bytes)
+<code>float</code>, can store decimal numbers (4 bytes) 
+<code>boolean</code>, can either store <code>true</code> or <code>false</code> (1 bit) </p>
+<p>Using smaller data types such as <code>byte</code> over a seemingly better <code>int</code> or <code>long</code> is useful for saving memory. When you have simple variables and you know their value will never go larger than 127 there's no reason to use a whole <code>int</code>.</p>
+<p>Reference data types are objects of a class or an interface. They can have much more complex behaviours (through methods) and store multiple pieces of data (both primitive and reference). Some examples are <code>String</code> (which holds an immutable sequence of characters like a word or a paragraph) and<code>Array</code> (which holds a dynamic sequence of any type) but there are many others and you can even make your own :)</p>
+<blockquote>
+<p>Reference data types are objects, while primitive data types aren't. Primitive data types can not point to <code>null</code> reference while reference data types can. The value of reference data types defaults to <code>null</code>, however. In the case of primitives, their default value is assigned (the minimum value). </p>
+</blockquote>
+<h2>Variables</h2>
+<p>A variable holds one piece of data. They have a type (any primitive or reference type) and a name (so you can refer to it in your code).</p>
+<p>First, we will begin with the basic syntax of declarations. To declare a variable, we simply choose the type of the variable (we will use int) and give it a name.</p>
+<pre><code>int foo;
+</code></pre>
+<p>To declare multiple variables with the same type, we can use:</p>
+<pre><code>int foo, foo1, foo2;
+</code></pre>
+<blockquote>
+<p>Every declaration ends with a <code>;</code> character, which essentially means "end of command", a command can be anything such as a method call or a variable declaration.</p>
+</blockquote>
+<p>Of course, this works with other types as well:</p>
+<pre><code>String foo;
+String foo2, foo3, foo4;
+</code></pre>
+<p>To give our variable a value other than the default we can either initialize it with a value:</p>
+<pre><code>int foo = 1;
+</code></pre>
+<p>Alternatively, first declare the variable and later in the code give it something to store. </p>
+<pre><code>int foo;
+foo = 1;
+</code></pre>
+<h2>Operators</h2>
+<p>Operators act between two values. The five arithmetic operators are fairly self explanatory:</p>
+<p>+,  addition 
+-,  subtraction 
+/,  division 
+*, multiplication 
+%, modulo (remainder) </p>
+<blockquote>
+<p>These can be only used while working with primitive types. The only exception is a string concatenation, when we want to put two sequence of characters together.</p>
+</blockquote>
+<pre><code>int foo = 1;
+int bar = 2;
+
+int result = foo + bar;
+</code></pre>
+<p>Now result stores the value 3. Also we don't have to declare a those variables called <code>foo, bar</code>. It can also be written like this</p>
+<pre><code>int result = 1 + 2;
+</code></pre>
+<blockquote>
+<p>If you try to divide by zero the program will crash with an <code>ArithmeticException</code>. We'll talk more about exceptions later.</p>
+</blockquote>
+<p>Of course, the other operators work the same way. </p>
+<pre><code>double speed = 1.0 / 8.0; // speed is now 0.125
+double four = speed * 32;
+
+// modulo gives the remainder of a devision
+int thing = 12 % 10; // thing is 2
+
+// delare a string by putting text in quotes
+String name = "Luke";
+String greeting = "Hi " + name;
+</code></pre>
+<blockquote>
+<p>Note that any text on a line past <code>//</code> is ignored by the complier. This is called a comment. They can be used to describe whats going on in your code so people who read it can understand more easily. you can also make a multi-line comment by putting anything between <code>/*</code> and <code>*/</code></p>
+</blockquote>
+<p>There are 3 boolean operators.</p>
+<p><code>!</code>, not, which inverts the value
+<code>&amp;&amp;</code>, and, which checks that both of the values are true
+<code>||</code>, or, which checks that at least one of the values is true</p>
+<pre><code>boolean foo = true;
+boolean bar = !foo;  // false
+boolean baz = foo &amp;&amp; bar; // false
+boolean bam = foo || bar; // true
+</code></pre>
+<p>There are 6 types of equality operator. They are used to compare 2 numbers and evaluate to a boolean. </p>
+<p><code>==</code>, compares a value when used on primitive types and a reference when used on reference types 
+<code>&gt;=</code>, is greater than or equal 
+<code>&lt;=</code>, is less than or equal 
+<code>&gt;</code>, is greater than 
+<code>&lt;</code>, is less than 
+<code>!=</code>, is not equal to (inverse of ==) </p>
+<pre><code>boolean foo = 3 &gt; 1; // true
+boolean bar = 9 == (3 + 4); // false
+</code></pre>
+<p><code>instanceof</code> is used for checking if an <strong><em>*object</em></strong>* is an instance of a particular class or it's subtype. This will make more sense once we learn more about objects. Example,</p>
+<pre><code>String foo = "hello world";
+boolean result = foo instanceof String; // true
+boolean other = foo instance of ArrayList; // false
+</code></pre>
+<p>Operators that evaluate to booleans can be chained together to form boolean expressions. These expressions can anywhere a boolean is needed.</p>
+<pre><code>boolean foo = 1 &lt; 2 || 2 &lt; 1;
+</code></pre>
+<p>The variable <code>foo</code> will now hold the value <code>true</code>, even though the second expression returns <code>false</code>. That is because its an or operator and the first expression has returned <code>true</code>.</p>
+<pre><code>boolean foo = 1 &lt; 2 &amp;&amp; 2 &lt; 1;
+</code></pre>
+<h2>If Statements</h2>
+<p>An if statement controls the flow of your program. You can specify code to run only if a boolean expression (known as a condition in this context) is true. </p>
+<pre><code>int foo = 5;
+int bar = 10;
+
+if (bar &gt; foo) {
+   // run some code
+}
+</code></pre>
+<hr />
+<p>to be continued...</p> 
+    </div>
+    
+
+    <div class="hide-for-print">
+
+
+        If you have any questions or suggestions, don't hesitate to ask me on [discord](https://discord.gg/VbZVnRd).
+
+        Also, the full code for all my tutorials is available on [github](https://github.com/LukeGrahamLandry/forge-modding-tutorial/tree/1.16.5).
+
+        <a href="https://github.com/LukeGrahamLandry/forge-modding-tutorial">
+            <div class="app">
+                <img src="./img/github.png" style="width: 70px">
+            </div>
+        </a>
+
+        <a href="https://discord.gg/VbZVnRd">
+            <div class="app">
+                <img src="./img/discord.png" style="width: 70px">
+            </div>
+        </a>
+
+        <!--
+        <a href="https://www.youtube.com/playlist?list=PLxBLp3RqmUMEU5vrtMY6tgfP2lnJD0OUj">
+            <div class="app">
+                <img src="img/youtube.png" style="width: 70px">
+            </div>
+        </a>
+        -->
+
+        <a href="https://www.patreon.com/LukeGrahamLandry">
+            <div class="app">
+                <img src="../img/patreon.png" style="width: 70px">
+            </div>
+        </a>
+    </div>
+</body>
+</html>
