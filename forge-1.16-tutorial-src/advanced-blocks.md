@@ -188,10 +188,10 @@ You should now have a fully functional block with custom functionality!
 
 - Make a soil that grows crops very quickly while it's raining
 
-- hint: look at how the vanilla `BoneMealItem` uses `IGrowable`
+  - hint: look at how the vanilla `BoneMealItem` uses `IGrowable`
 
 - Make a block that kills you if you try to break it
 
-- hint: `player.hurt(DamageSource.GENERIC, 999);`
+  - hint: `player.hurt(DamageSource.GENERIC, 999);`
 
 - Make a directional block that rotates when you right click it

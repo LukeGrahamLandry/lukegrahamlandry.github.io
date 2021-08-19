@@ -195,4 +195,4 @@ The block to which you bound your tile entity is a block like any other. Don't f
 - Make the mob slayer we made in this tutorial directional. That is, instead of the area of effect being centered on the block, have the block rotateable from like the last tutorial and only attack mobs in the forwards direction.
 - Make a tile entity that teleports nearby mobs on top of it
 
-- hint: `entity.setPos(x, y, z);`
+    - hint: `entity.setPos(x, y, z);`

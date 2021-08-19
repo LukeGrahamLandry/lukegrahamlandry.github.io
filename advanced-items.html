@@ -167,27 +167,27 @@ if (stack.getDamageValue() &gt;= stack.getMaxDamage()) stack.setCount(0);
 <ul>
 <li>
 <p>Make an item that replaces any block you right click with dirt</p>
-</li>
-<li>
-<p>hint: <code>world.setBlock(pos, Blocks.VANILLA_NAME.defaultBlockState());</code></p>
+<ul>
+<li>hint: <code>world.setBlock(pos, Blocks.VANILLA_NAME.defaultBlockState());</code></li>
+</ul>
 </li>
 <li>
 <p>Make an item that gives poison to any entity you right click</p>
-</li>
-<li>
-<p>hint: <code>entity.addEffect(new EffectInstance(Effects.VANILLA_NAME, duration, amplifier));</code></p>
+<ul>
+<li>hint: <code>entity.addEffect(new EffectInstance(Effects.VANILLA_NAME, duration, amplifier));</code></li>
+</ul>
 </li>
 <li>
 <p>Make an item that propels the player in the direction they're looking</p>
-</li>
-<li>
-<p>hint: <code>player.setDeltaMovement(x, y, z);</code></p>
+<ul>
+<li>hint: <code>player.setDeltaMovement(x, y, z);</code></li>
+</ul>
 </li>
 <li>
 <p>Make an item that places a torch automatically while in the inventory of a player in darkness</p>
-</li>
-<li>
-<p>hint: <code>Math.max(world.getBrightness(LightType.BLOCK, pos), world.getBrightness(LightType.SKY, pos)) &gt; 7</code></p>
+<ul>
+<li>hint: <code>Math.max(world.getBrightness(LightType.BLOCK, pos), world.getBrightness(LightType.SKY, pos)) &gt; 7</code></li>
+</ul>
 </li>
 </ul> 
     </div>
