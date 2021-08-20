@@ -41,6 +41,10 @@ body {
     display: inline-block;
 }
 
+.img-link {
+  text-decoration: none;
+}
+
 #tutorial-select {
     max-width: 500px;
     width: 85%;

@@ -37,6 +37,9 @@ function updateDarkmode(){
 
 // set darkmode from cookie
 if (getCookie("darkmode")) {
-    document.getElementById("dark").checked = true;
+    if (document.getElementById("dark") != undefined){
+        document.getElementById("dark").checked = true;
+    }
+    
     updateDarkmode();
 }
