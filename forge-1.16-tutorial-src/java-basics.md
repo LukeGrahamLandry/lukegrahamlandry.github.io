@@ -1,36 +1,35 @@
 Before you begin trying to make a Minecraft mod, it is important that you are comfortable with the Java programming language. There exist better ways to learn Java for beginners than this document but I'll make an attempt. If you've already got a good understanding of Java, I encourage you to skip this and get started making your mod. Otherwise, if you're already comfortable with another programming language, this will be trivial to learn, if not might be kinda difficult. 
 
-## Data Types
+## Types
 
-In Java, there are two kinds of data types: primitive and** r**eference.
+There are two kinds of data types: primitive and reference.
 
 Primitive data types are the simple building blocks of information your programs can store. Such as, 
 
-`byte`, can store values of `-128` to `127`  (1 byte) 
-`short`, can store value of `-32768` to `32767` (2 bytes) 
-`int`, can store value of `-2147483648` to `2147483647` (4 bytes) 
-`long`, can store value of `-9223372036854775808` to `9223372036854775807` (8 bytes)
-`char`, can store characters (2 bytes) 
-`double`, can store decimal numbers (8 bytes)
-`float`, can store decimal numbers (4 bytes) 
-`boolean`, can either store `true` or `false` (1 bit) 
+`byte`, can store values of `-128` to `127`  (1 byte)  
+`short`, can store value of `-32768` to `32767` (2 bytes)  
+`int`, can store value of `-2147483648` to `2147483647` (4 bytes)  
+`long`, can store value of `-9223372036854775808` to `9223372036854775807` (8 bytes)  
+`char`, can store characters (2 bytes)  
+`double`, can store decimal numbers (8 bytes)   
+`float`, can store decimal numbers (4 bytes)   
+`boolean`, can either store `true` or `false` (1 bit)   
 
-Using smaller data types such as `byte` over a seemingly better `int` or `long` is useful for saving memory. When you have simple variables and you know their value will never go larger than 127 there's no reason to use a whole `int`.
+Using smaller data types such as `byte` instead of a more versatile `long` is preferred when you can predict the range of your data because is saves memory. When variable whose value you know will never go over 127, there's no reason to use 4 times the memory for an `int`. In practice, modern computers are powerful enough that it doesn't matter.
 
-Reference data types are objects of a class or an interface. They can have much more complex behaviours (through methods) and store multiple pieces of data (both primitive and reference). Some examples are `String` (which holds an immutable sequence of characters like a word or a paragraph) and`Array` (which holds a dynamic sequence of any type) but there are many others and you can even make your own :)
+Reference data types are objects of a class or an interface. They can have much more complex behaviours (through methods) and store multiple pieces of data (both primitive and reference). Later we will go over some examples that the standard library includes but you can also define your own class types. 
 
-> Reference data types are objects, while primitive data types aren't. Primitive data types can not point to `null` reference while reference data types can. The value of reference data types defaults to `null`, however. In the case of primitives, their default value is assigned (the minimum value). 
+> Reference data types are objects, while primitive data types are not. Primitive data types can not point to `null` reference while reference data types can. The value of reference data types defaults to `null`, however. In the case of primitives, their default value is assigned as the minimum value. 
 
 ## Variables
 
 A variable holds one piece of data. They have a type (any primitive or reference type) and a name (so you can refer to it in your code).
 
-First, we will begin with the basic syntax of declarations. To declare a variable, we simply choose the type of the variable (we will use int) and give it a name.
+To declare a variable, we specify the type of the variable (in this case an int) and give it a name.
 
     int foo;
 
-To declare multiple variables with the same type, we can use:
-
+To declare multiple variables with the same type:
     int foo, foo1, foo2;
 
 > Every declaration ends with a `;` character, which essentially means "end of command", a command can be anything such as a method call or a variable declaration.
@@ -40,11 +39,11 @@ Of course, this works with other types as well:
     String foo;
     String foo2, foo3, foo4;
 
-To give our variable a value other than the default we can either initialize it with a value:
+To give our variable a value other than the default we can initialize it with a value:
 
     int foo = 1;
 
-Alternatively, first declare the variable and later in the code give it something to store. 
+Or, first declare the variable and later in the code give it a value to store:
 
     int foo;
     foo = 1;
@@ -64,9 +63,9 @@ Operators act between two values. The five arithmetic operators are fairly self 
     int foo = 1;
     int bar = 2;
     
-    int result = foo + bar;
+    int result = foo + bar; 
 
-Now result stores the value 3. Also we don't have to declare a those variables called `foo, bar`. It can also be written like this
+Now result stores the value 3. In this case, the variables `foo` and `bar` are redundant. This is an equivalent statement: 
 
     int result = 1 + 2;
 
@@ -109,7 +108,7 @@ There are 6 types of equality operator. They are used to compare 2 numbers and e
     boolean foo = 3 > 1; // true
     boolean bar = 9 == (3 + 4); // false
 
-`instanceof` is used for checking if an ****object**** is an instance of a particular class or it's subtype. This will make more sense once we learn more about objects. Example,
+`instanceof` is used for checking if an object is an instance of a particular class or it's subtype. This will make more sense once we learn more about objects. Example,
 
     String foo = "hello world";
     boolean result = foo instanceof String; // true
@@ -136,4 +135,36 @@ An if statement controls the flow of your program. You can specify code to run o
 
 ---
 
-to be continued...
+# to be continued...
+
+
+## While Loops
+
+## For Loops
+
+## Methods
+
+## Classes
+
+## Inheritance 
+
+## Interfaces
+
+## Exceptions
+
+the most common exception is a NullPointerException
+
+## Example Type: String
+
+which holds an immutable sequence of characters like a word or a paragraph
+
+## Example Type: ArrayList
+
+which holds a dynamic sequence of any type
+
+- compared to an array 
+- list interface 
+
+## Example Type: Supplier 
+
+## Generics 

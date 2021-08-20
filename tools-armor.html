@@ -9,7 +9,7 @@
     <link rel="shortcut icon" href="./img/logo.png">
     <link rel="stylesheet" href="./styles/tutorial.css">
     <link rel="stylesheet" href="./styles/md.css">
-    <link rel="stylesheet" id="theme" href="./styles/tutorial-darkmode.css">
+    <link rel="stylesheet" id="theme" href="">
 </head>
 <body>
     <div class="hide-for-print" style="max-width: 800px; width: 100%; text-align: left; display: inline-block;">
@@ -92,7 +92,7 @@
             () -&gt; new HoeItem(ModItemTier.PINK, 0, -1.0F, new Item.Properties().tab(ModCreativeTab.instance)));
 </code></pre>
 <h3>Advanced Tools</h3>
-<p>Since they are simply items, you can make your own classes that extend the basic tool classes to give them unique behaviour. You can use the same methods discussed in the <a href="__GHOST_URL__/advanced-items/">advanced items tutorial</a>. Here are some methods that might be interesting:</p>
+<p>Since they are simply items, you can make your own classes that extend the basic tool classes to give them unique behaviour. You can use the same methods discussed in the <a href="/advanced-items">advanced items tutorial</a>. Here are some methods that might be interesting:</p>
 <ul>
 <li><code>mineBlock</code>: called when the player breaks a block with the item. You should make sure to call the super method to reduce durability.</li>
 <li><code>isCorrectToolForDrops</code></li>
@@ -310,50 +310,6 @@ public boolean makesPiglinsNeutral(ItemStack stack, LivingEntity wearer) {
         </a>
     </div>
 
-
-    <script>
-        function setCookie(cname,cvalue,exdays) {
-            var d = new Date();
-            d.setTime(d.getTime() + (exdays*24*60*60*1000));
-            var expires = "expires=" + d.toGMTString();
-            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-        }
-        function getCookie(cname) {
-            var name = cname + "=";
-            var decodedCookie = decodeURIComponent(document.cookie);
-            var ca = decodedCookie.split(';');
-            for(var i = 0; i < ca.length; i++) {
-                var c = ca[i];
-                while (c.charAt(0) == ' ') {
-                    c = c.substring(1);
-                }
-                if (c.indexOf(name) == 0) {
-                    return c.substring(name.length, c.length);
-                }
-            }
-            return null;
-        }
-        function delCookie(cname){
-            setCookie(cname, "", -1);
-        }
-
-        function updateDarkmode(){
-            let dark = document.getElementById("dark").checked;
-            let sheet;
-            if (dark){
-                sheet = "./styles/tutorial-darkmode.css";
-            } else {
-                sheet = "";
-            }
-            document.getElementById("theme").href = sheet;
-            setCookie("darkmode", sheet, 365);
-        }
-
-        // set darkmode from cookie
-        if (!getCookie("darkmode")) {
-            document.getElementById("dark").checked = false;
-            updateDarkmode();
-        }
-    </script>
+    <script src="./js/dark.js"></script>
 </body>
 </html>

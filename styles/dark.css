@@ -1,7 +1,40 @@
 body {
     background-color: #1c1e22;
     scrollbar-color:  rgb(53, 53, 53)  rgb(20, 20, 20);  /* new but only for firefox*/
+    color: #a7b3c1;
 }
+
+
+/* INDEX */ 
+
+#nav {
+  background-color: #282c35;
+}
+
+.post {
+  color: rgb(0, 162, 255) !important;
+}
+
+.post:hover {
+  background-color: #1c1e24;
+}
+
+/*deprecated but works in  Chrome/Edge/Safari*/
+#nav::-webkit-scrollbar {
+  width: 15px;               /* width of the entire scrollbar */
+}
+#nav::-webkit-scrollbar-track {
+  background: rgb(20, 20, 20);        /* color of the tracking area */
+}
+#nav::-webkit-scrollbar-thumb {
+  background-color: rgb(53, 53, 53);    /* color of the scroll thumb */
+  border-radius: 20px;       /* roundness of the scroll thumb */
+  border: 3px solid rgb(20, 20, 20);
+}
+
+
+
+/* TUTORIALS */
 
 #content {
     color: #a7b3c1;
@@ -9,8 +42,8 @@ body {
 }
 
  a {
-    color: rgb(0, 162, 255);
-}
+    color: rgb(0, 162, 255) !important;
+  }
 
 #content pre {
     background-color: rgb(32, 32, 32);

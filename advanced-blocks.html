@@ -9,7 +9,7 @@
     <link rel="shortcut icon" href="./img/logo.png">
     <link rel="stylesheet" href="./styles/tutorial.css">
     <link rel="stylesheet" href="./styles/md.css">
-    <link rel="stylesheet" id="theme" href="./styles/tutorial-darkmode.css">
+    <link rel="stylesheet" id="theme" href="">
 </head>
 <body>
     <div class="hide-for-print" style="max-width: 800px; width: 100%; text-align: left; display: inline-block;">
@@ -24,7 +24,7 @@
     <div id="content" class="markdown-body">
         <p>A tutorial on making a block with custom behaviour. It will react to being right clicked, explosions, random ticks and even act as soil for crops!</p>
 <h2>Init</h2>
-<p>Very similar to how we did <a href="__GHOST_URL__/advanced-items">advanced items</a>, let's make a block that has some unique behaviour by creating our own version of the block class. Start with the same code for a <a href="__GHOST_URL__/basic-blocks">basic block</a> but reference a new class. </p>
+<p>Very similar to how we did <a href="/advanced-items">advanced items</a>, let's make a block that has some unique behaviour by creating our own version of the block class. Start with the same code for a <a href="/basic-blocks">basic block</a> but reference a new class. </p>
 <pre><code>public static final RegistryObject&lt;Block&gt; SAD_BLOCK = BLOCKS.register("sad_block",
             () -&gt; new SadBlock(Block.Properties.copy(Blocks.DIRT)));
 </code></pre>
@@ -111,7 +111,7 @@ public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random
 </ul>
 <h3>Related Tutorials</h3>
 <ul>
-<li><a href="__GHOST_URL__/tile-entities/">Tile Entities</a>: Allows your block to save data and react to every tick. I made mine kill nearby mobs!</li>
+<li><a href="/tile-entities">Tile Entities</a>: Allows your block to save data and react to every tick. I made mine kill nearby mobs!</li>
 <li>You can also make your block a point of interest for a custom villager profession. Tutorial for this coming soon! <a href="https://discord.gg/VbZVnRd">Join the discord server</a> to be notified when they are released. </li>
 </ul>
 <h3>Rotation</h3>
@@ -231,50 +231,6 @@ public BlockState getStateForPlacement(BlockItemUseContext context) {
         </a>
     </div>
 
-
-    <script>
-        function setCookie(cname,cvalue,exdays) {
-            var d = new Date();
-            d.setTime(d.getTime() + (exdays*24*60*60*1000));
-            var expires = "expires=" + d.toGMTString();
-            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-        }
-        function getCookie(cname) {
-            var name = cname + "=";
-            var decodedCookie = decodeURIComponent(document.cookie);
-            var ca = decodedCookie.split(';');
-            for(var i = 0; i < ca.length; i++) {
-                var c = ca[i];
-                while (c.charAt(0) == ' ') {
-                    c = c.substring(1);
-                }
-                if (c.indexOf(name) == 0) {
-                    return c.substring(name.length, c.length);
-                }
-            }
-            return null;
-        }
-        function delCookie(cname){
-            setCookie(cname, "", -1);
-        }
-
-        function updateDarkmode(){
-            let dark = document.getElementById("dark").checked;
-            let sheet;
-            if (dark){
-                sheet = "./styles/tutorial-darkmode.css";
-            } else {
-                sheet = "";
-            }
-            document.getElementById("theme").href = sheet;
-            setCookie("darkmode", sheet, 365);
-        }
-
-        // set darkmode from cookie
-        if (!getCookie("darkmode")) {
-            document.getElementById("dark").checked = false;
-            updateDarkmode();
-        }
-    </script>
+    <script src="./js/dark.js"></script>
 </body>
 </html>

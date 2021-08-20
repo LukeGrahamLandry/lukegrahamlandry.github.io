@@ -2,7 +2,7 @@ A tutorial on making a block with custom behaviour. It will react to being right
 
 ## Init
 
-Very similar to how we did [advanced items](__GHOST_URL__/advanced-items), let's make a block that has some unique behaviour by creating our own version of the block class. Start with the same code for a [basic block](__GHOST_URL__/basic-blocks) but reference a new class. 
+Very similar to how we did [advanced items](/advanced-items), let's make a block that has some unique behaviour by creating our own version of the block class. Start with the same code for a [basic block](/basic-blocks) but reference a new class. 
 
     public static final RegistryObject<Block> SAD_BLOCK = BLOCKS.register("sad_block",
                 () -> new SadBlock(Block.Properties.copy(Blocks.DIRT)));
@@ -111,7 +111,7 @@ The `Block` class has lots more methods to play with. Here's a description of a 
 
 ### Related Tutorials
 
-- [Tile Entities](__GHOST_URL__/tile-entities/): Allows your block to save data and react to every tick. I made mine kill nearby mobs!
+- [Tile Entities](/tile-entities): Allows your block to save data and react to every tick. I made mine kill nearby mobs!
 -  You can also make your block a point of interest for a custom villager profession. Tutorial for this coming soon! [Join the discord server](https://discord.gg/VbZVnRd) to be notified when they are released. 
 
 ### Rotation

@@ -9,7 +9,7 @@
     <link rel="shortcut icon" href="./img/logo.png">
     <link rel="stylesheet" href="./styles/tutorial.css">
     <link rel="stylesheet" href="./styles/md.css">
-    <link rel="stylesheet" id="theme" href="./styles/tutorial-darkmode.css">
+    <link rel="stylesheet" id="theme" href="">
 </head>
 <body>
     <div class="hide-for-print" style="max-width: 800px; width: 100%; text-align: left; display: inline-block;">
@@ -23,30 +23,29 @@
     
     <div id="content" class="markdown-body">
         <p>Before you begin trying to make a Minecraft mod, it is important that you are comfortable with the Java programming language. There exist better ways to learn Java for beginners than this document but I'll make an attempt. If you've already got a good understanding of Java, I encourage you to skip this and get started making your mod. Otherwise, if you're already comfortable with another programming language, this will be trivial to learn, if not might be kinda difficult. </p>
-<h2>Data Types</h2>
-<p>In Java, there are two kinds of data types: primitive and<strong> r</strong>eference.</p>
+<h2>Types</h2>
+<p>There are two kinds of data types: primitive and reference.</p>
 <p>Primitive data types are the simple building blocks of information your programs can store. Such as, </p>
-<p><code>byte</code>, can store values of <code>-128</code> to <code>127</code>  (1 byte) 
-<code>short</code>, can store value of <code>-32768</code> to <code>32767</code> (2 bytes) 
-<code>int</code>, can store value of <code>-2147483648</code> to <code>2147483647</code> (4 bytes) 
-<code>long</code>, can store value of <code>-9223372036854775808</code> to <code>9223372036854775807</code> (8 bytes)
-<code>char</code>, can store characters (2 bytes) 
-<code>double</code>, can store decimal numbers (8 bytes)
-<code>float</code>, can store decimal numbers (4 bytes) 
-<code>boolean</code>, can either store <code>true</code> or <code>false</code> (1 bit) </p>
-<p>Using smaller data types such as <code>byte</code> over a seemingly better <code>int</code> or <code>long</code> is useful for saving memory. When you have simple variables and you know their value will never go larger than 127 there's no reason to use a whole <code>int</code>.</p>
-<p>Reference data types are objects of a class or an interface. They can have much more complex behaviours (through methods) and store multiple pieces of data (both primitive and reference). Some examples are <code>String</code> (which holds an immutable sequence of characters like a word or a paragraph) and<code>Array</code> (which holds a dynamic sequence of any type) but there are many others and you can even make your own :)</p>
+<p><code>byte</code>, can store values of <code>-128</code> to <code>127</code>  (1 byte)<br />
+<code>short</code>, can store value of <code>-32768</code> to <code>32767</code> (2 bytes)<br />
+<code>int</code>, can store value of <code>-2147483648</code> to <code>2147483647</code> (4 bytes)<br />
+<code>long</code>, can store value of <code>-9223372036854775808</code> to <code>9223372036854775807</code> (8 bytes)<br />
+<code>char</code>, can store characters (2 bytes)<br />
+<code>double</code>, can store decimal numbers (8 bytes) <br />
+<code>float</code>, can store decimal numbers (4 bytes) <br />
+<code>boolean</code>, can either store <code>true</code> or <code>false</code> (1 bit)   </p>
+<p>Using smaller data types such as <code>byte</code> instead of a more versatile <code>long</code> is preferred when you can predict the range of your data because is saves memory. When variable whose value you know will never go over 127, there's no reason to use 4 times the memory for an <code>int</code>. In practice, modern computers are powerful enough that it doesn't matter.</p>
+<p>Reference data types are objects of a class or an interface. They can have much more complex behaviours (through methods) and store multiple pieces of data (both primitive and reference). Later we will go over some examples that the standard library includes but you can also define your own class types. </p>
 <blockquote>
-<p>Reference data types are objects, while primitive data types aren't. Primitive data types can not point to <code>null</code> reference while reference data types can. The value of reference data types defaults to <code>null</code>, however. In the case of primitives, their default value is assigned (the minimum value). </p>
+<p>Reference data types are objects, while primitive data types are not. Primitive data types can not point to <code>null</code> reference while reference data types can. The value of reference data types defaults to <code>null</code>, however. In the case of primitives, their default value is assigned as the minimum value. </p>
 </blockquote>
 <h2>Variables</h2>
 <p>A variable holds one piece of data. They have a type (any primitive or reference type) and a name (so you can refer to it in your code).</p>
-<p>First, we will begin with the basic syntax of declarations. To declare a variable, we simply choose the type of the variable (we will use int) and give it a name.</p>
+<p>To declare a variable, we specify the type of the variable (in this case an int) and give it a name.</p>
 <pre><code>int foo;
 </code></pre>
-<p>To declare multiple variables with the same type, we can use:</p>
-<pre><code>int foo, foo1, foo2;
-</code></pre>
+<p>To declare multiple variables with the same type:
+    int foo, foo1, foo2;</p>
 <blockquote>
 <p>Every declaration ends with a <code>;</code> character, which essentially means "end of command", a command can be anything such as a method call or a variable declaration.</p>
 </blockquote>
@@ -54,10 +53,10 @@
 <pre><code>String foo;
 String foo2, foo3, foo4;
 </code></pre>
-<p>To give our variable a value other than the default we can either initialize it with a value:</p>
+<p>To give our variable a value other than the default we can initialize it with a value:</p>
 <pre><code>int foo = 1;
 </code></pre>
-<p>Alternatively, first declare the variable and later in the code give it something to store. </p>
+<p>Or, first declare the variable and later in the code give it a value to store:</p>
 <pre><code>int foo;
 foo = 1;
 </code></pre>
@@ -76,7 +75,7 @@ int bar = 2;
 
 int result = foo + bar;
 </code></pre>
-<p>Now result stores the value 3. Also we don't have to declare a those variables called <code>foo, bar</code>. It can also be written like this</p>
+<p>Now result stores the value 3. In this case, the variables <code>foo</code> and <code>bar</code> are redundant. This is an equivalent statement: </p>
 <pre><code>int result = 1 + 2;
 </code></pre>
 <blockquote>
@@ -115,7 +114,7 @@ boolean bam = foo || bar; // true
 <pre><code>boolean foo = 3 &gt; 1; // true
 boolean bar = 9 == (3 + 4); // false
 </code></pre>
-<p><code>instanceof</code> is used for checking if an <strong><em>*object</em></strong>* is an instance of a particular class or it's subtype. This will make more sense once we learn more about objects. Example,</p>
+<p><code>instanceof</code> is used for checking if an object is an instance of a particular class or it's subtype. This will make more sense once we learn more about objects. Example,</p>
 <pre><code>String foo = "hello world";
 boolean result = foo instanceof String; // true
 boolean other = foo instance of ArrayList; // false
@@ -136,7 +135,25 @@ if (bar &gt; foo) {
 }
 </code></pre>
 <hr />
-<p>to be continued...</p> 
+<h1>to be continued...</h1>
+<h2>While Loops</h2>
+<h2>For Loops</h2>
+<h2>Methods</h2>
+<h2>Classes</h2>
+<h2>Inheritance</h2>
+<h2>Interfaces</h2>
+<h2>Exceptions</h2>
+<p>the most common exception is a NullPointerException</p>
+<h2>Example Type: String</h2>
+<p>which holds an immutable sequence of characters like a word or a paragraph</p>
+<h2>Example Type: ArrayList</h2>
+<p>which holds a dynamic sequence of any type</p>
+<ul>
+<li>compared to an array </li>
+<li>list interface </li>
+</ul>
+<h2>Example Type: Supplier</h2>
+<h2>Generics</h2> 
     </div>
     
 
@@ -177,50 +194,6 @@ if (bar &gt; foo) {
         </a>
     </div>
 
-
-    <script>
-        function setCookie(cname,cvalue,exdays) {
-            var d = new Date();
-            d.setTime(d.getTime() + (exdays*24*60*60*1000));
-            var expires = "expires=" + d.toGMTString();
-            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-        }
-        function getCookie(cname) {
-            var name = cname + "=";
-            var decodedCookie = decodeURIComponent(document.cookie);
-            var ca = decodedCookie.split(';');
-            for(var i = 0; i < ca.length; i++) {
-                var c = ca[i];
-                while (c.charAt(0) == ' ') {
-                    c = c.substring(1);
-                }
-                if (c.indexOf(name) == 0) {
-                    return c.substring(name.length, c.length);
-                }
-            }
-            return null;
-        }
-        function delCookie(cname){
-            setCookie(cname, "", -1);
-        }
-
-        function updateDarkmode(){
-            let dark = document.getElementById("dark").checked;
-            let sheet;
-            if (dark){
-                sheet = "./styles/tutorial-darkmode.css";
-            } else {
-                sheet = "";
-            }
-            document.getElementById("theme").href = sheet;
-            setCookie("darkmode", sheet, 365);
-        }
-
-        // set darkmode from cookie
-        if (!getCookie("darkmode")) {
-            document.getElementById("dark").checked = false;
-            updateDarkmode();
-        }
-    </script>
+    <script src="./js/dark.js"></script>
 </body>
 </html>

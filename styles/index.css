@@ -1,0 +1,42 @@
+body {
+    text-align: center;
+    font-size: 1.5rem;
+    background-color: rgb(229, 226, 226);
+}
+
+#nav {
+    width: 100%;
+    max-width: 300px;
+    display: inline-block;
+    text-align: left;
+    padding: 25px;
+    background-color: white;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    max-height: 500px;
+}
+
+.post {
+    border-radius: 10px;
+    padding: 10px;
+    display: block;
+    text-decoration: none;
+}
+
+.post:hover {
+    background-color: rgb(205, 217, 255);
+  }
+
+
+  #nav::-webkit-scrollbar {
+    width: 15px;               /* width of the entire scrollbar */
+  }
+  #nav::-webkit-scrollbar-track {
+    background: rgb(200, 200, 200);        /* color of the tracking area */
+  }
+  #nav::-webkit-scrollbar-thumb {
+    background-color: rgb(165, 165, 165);    /* color of the scroll thumb */
+    border-radius: 20px;       /* roundness of the scroll thumb */
+    border: 3px solid rgb(200, 200, 200);
+  }

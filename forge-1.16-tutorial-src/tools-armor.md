@@ -78,7 +78,7 @@ Now you have to register your tools in `ItemInit` just like any other item. Each
 
 ### Advanced Tools
 
-Since they are simply items, you can make your own classes that extend the basic tool classes to give them unique behaviour. You can use the same methods discussed in the [advanced items tutorial](__GHOST_URL__/advanced-items/). Here are some methods that might be interesting:
+Since they are simply items, you can make your own classes that extend the basic tool classes to give them unique behaviour. You can use the same methods discussed in the [advanced items tutorial](/advanced-items). Here are some methods that might be interesting:
 
 - `mineBlock`: called when the player breaks a block with the item. You should make sure to call the super method to reduce durability.
 - `isCorrectToolForDrops`
