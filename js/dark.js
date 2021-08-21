@@ -27,7 +27,7 @@ function updateDarkmode(){
     let dark = document.getElementById("dark") == undefined ? getCookie("darkmode") : document.getElementById("dark").checked;
     let sheet;
     if (dark){
-        sheet = "./styles/dark.css";
+        sheet = "/styles/dark.css";
     } else {
         sheet = "";
     }
