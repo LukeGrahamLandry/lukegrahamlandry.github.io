@@ -58,7 +58,8 @@ for root, dirs, files in os.walk("../forge-1.16-tutorial-src", topdown=False):
             f.write(full_content)
 
         # ugly hack
-        os.mkdir("../" + title)
+        if (not os.path.isdir("../" + title)):
+            os.mkdir("../" + title)
         with open("../" + title + "/index.html", "w") as f:
             f.write('github pages can not deal with trailing slashes properly. redirecting... <script> window.location.href = "/' + title + '";</script>')
 
