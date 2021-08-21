@@ -6,20 +6,22 @@ There are two kinds of data types: primitive and reference.
 
 Primitive data types are the simple building blocks of information your programs can store. Such as, 
 
-`byte`, can store values of `-128` to `127`  (1 byte)  
-`short`, can store value of `-32768` to `32767` (2 bytes)  
-`int`, can store value of `-2147483648` to `2147483647` (4 bytes)  
-`long`, can store value of `-9223372036854775808` to `9223372036854775807` (8 bytes)  
-`char`, can store characters (2 bytes)  
-`double`, can store decimal numbers (8 bytes)   
-`float`, can store decimal numbers (4 bytes)   
-`boolean`, can either store `true` or `false` (1 bit)   
+- `byte`, can store values of `-128` to `127`  
+- `short`, can store value of `-32768` to `32767` 
+- `int`, can store value of `-2147483648` to `2147483647`
+- `long`, can store value of `-9223372036854775808` to `9223372036854775807`
+- `char`, can store characters
+- `double`, can store decimal numbers
+- `float`, can store decimal numbers
+- `boolean`, can either store `true` or `false`
 
 Using smaller data types such as `byte` instead of a more versatile `long` is preferred when you can predict the range of your data because is saves memory. When variable whose value you know will never go over 127, there's no reason to use 4 times the memory for an `int`. In practice, modern computers are powerful enough that it doesn't matter.
 
-Reference data types are objects of a class or an interface. They can have much more complex behaviours (through methods) and store multiple pieces of data (both primitive and reference). Later we will go over some examples that the standard library includes but you can also define your own class types. 
+Reference data types are objects of a class or an interface. They can have complex behaviors (by having methods) and store multiple pieces of data (both primitive and reference types). Later we will go over some examples that the standard library includes but you can also define your own class types. 
 
-> Reference data types are objects, while primitive data types are not. Primitive data types can not point to `null` reference while reference data types can. The value of reference data types defaults to `null`, however. In the case of primitives, their default value is assigned as the minimum value. 
+Reference data types are considered objects, while primitive data types are not. Primitive data types can not point to `null` reference while reference data types can. The value of reference data types defaults to `null`, however. In the case of primitives, their default value is assigned as the minimum value. 
+
+All primitive types have a wrapper object that you may use if you need to permit a null value. For example, the `Integer` class holds and `int`. It's fine if this doesn't make sense yet and you will almost never need to use it anyway.
 
 ## Variables
 
@@ -52,11 +54,11 @@ Or, first declare the variable and later in the code give it a value to store:
 
 Operators act between two values. The five arithmetic operators are fairly self explanatory:
 
-+,  addition 
--,  subtraction 
-/,  division 
-*, multiplication 
-%, modulo (remainder) 
+- +,  addition 
+- -,  subtraction 
+- /,  division 
+- *, multiplication 
+- %, modulo (remainder) 
 
 > These can be only used while working with primitive types. The only exception is a string concatenation, when we want to put two sequence of characters together.
 
@@ -87,9 +89,9 @@ Of course, the other operators work the same way.
 
 There are 3 boolean operators.
 
-`!`, not, which inverts the value
-`&&`, and, which checks that both of the values are true
-`||`, or, which checks that at least one of the values is true
+- `!`, not, which inverts the value
+- `&&`, and, which checks that both of the values are true
+- `||`, or, which checks that at least one of the values is true
 
     boolean foo = true;
     boolean bar = !foo;  // false
@@ -98,12 +100,12 @@ There are 3 boolean operators.
 
 There are 6 types of equality operator. They are used to compare 2 numbers and evaluate to a boolean. 
 
-`==`, compares a value when used on primitive types and a reference when used on reference types 
-`>=`, is greater than or equal 
-`<=`, is less than or equal 
-`>`, is greater than 
-`<`, is less than 
-`!=`, is not equal to (inverse of ==) 
+- `==`, compares a value when used on primitive types and a reference when used on reference types 
+- `>=`, is greater than or equal 
+- `<=`, is less than or equal 
+- `>`, is greater than 
+- `<`, is less than 
+- `!=`, is not equal to (inverse of ==) 
 
     boolean foo = 3 > 1; // true
     boolean bar = 9 == (3 + 4); // false
@@ -118,9 +120,11 @@ Operators that evaluate to booleans can be chained together to form boolean expr
 
     boolean foo = 1 < 2 || 2 < 1;
 
-The variable `foo` will now hold the value `true`, even though the second expression returns `false`. That is because its an or operator and the first expression has returned `true`.
+`foo` will hold the value `true`, even though the second expression returns `false`. Because at least the expression on the right returned `true`.
 
-    boolean foo = 1 < 2 && 2 < 1;
+    boolean bar = 1 < 2 && 2 < 1;
+
+`bar` however, will be `false` because only one of the expressions was `true`.
 
 ## If Statements
 
@@ -168,3 +172,7 @@ which holds a dynamic sequence of any type
 ## Example Type: Supplier 
 
 ## Generics 
+
+
+# Sources
+the first two sections of this post were adapted from java tutorials by @temedy  

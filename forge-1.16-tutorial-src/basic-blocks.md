@@ -23,7 +23,7 @@ Then your `Properties` object has many other methods you can call to set differe
     () -> new Block(Block.Properties.of(Material.STONE).strength(4f, 1200f).harvestLevel(2).harvestTool(ToolType.PICKAXE).requiresCorrectToolForDrops().lightLevel((state) -> 15))
     
 
-You can also use `AbstractBlock.Properties.*copy*(ANOTHER_BLOCK)` to avoid writing things out repeatedly. All vanilla blocks can be accessed with `Blocks.INSERT_NAME_HERE` so you can copy properties from one of them if you feel like it.
+You can also use `AbstractBlock.Properties.copy(ANOTHER_BLOCK)` to avoid writing things out repeatedly. All vanilla blocks can be accessed with `Blocks.INSERT_NAME_HERE` so you can copy properties from one of them if you feel like it. Or avoid redundancy by referencing `YOUR_BLOCK.get()`
 
 ## Block Item
 
