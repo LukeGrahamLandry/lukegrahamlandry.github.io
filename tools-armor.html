@@ -339,6 +339,12 @@ Use those exact templates because the positioning is important, they should be 5
     
 
     <div class="hide-for-print">
+        <br>
+        <div style="width: 100%; max-width: 800px; display: inline-block;" class="hide-for-print">
+            <button class="btn btn-primary" style="width: 19%;" onclick="back()" id="back">Back</button>
+            <button class="btn btn-primary" style="width: 80%;" onclick="next()" id="next">Next Tutorial</button> <br> <br>
+        </div>
+        <br><br>
 
         <!--
 
@@ -376,5 +382,26 @@ Use those exact templates because the positioning is important, they should be 5
     </div>
 
     <script src="/js/dark.js"></script>
+    <script src="/index.js"></script>
+    <script>
+        let thisPage = window.location.pathname.split("/")[1].split(".")[0]
+        let index = getTutorials().indexOf(thisPage);
+        if (index == 0){
+            document.getElementById("back").disabled = true;
+            console.log("back")
+        }
+        if (index == (getTutorials().length - 1)){
+            document.getElementById("next").disabled = true;
+            console.log("next")
+        }
+
+        function back(){
+            window.location.href = "/" + getTutorials()[index - 1]
+        }
+
+        function next(){
+            window.location.href = "/" + getTutorials()[index + 1]
+        }
+    </script>
 </body>
 </html>

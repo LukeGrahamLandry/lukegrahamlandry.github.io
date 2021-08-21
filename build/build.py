@@ -70,6 +70,14 @@ with open("../code.css", "w") as f:
 with open("index.html", "r") as f:
     content = "".join(f.readlines())
 
-with open("../index.html", "w") as f:
+    with open("../index.html", "w") as f:
+        f.write(content)
+
+    
+with open("index.js", "r") as f:
+    content = "".join(f.readlines())
+
+with open("../index.js", "w") as f:
     f.write(content.split("|")[0] + str(tutorials) + content.split("|")[1])
 
+    
