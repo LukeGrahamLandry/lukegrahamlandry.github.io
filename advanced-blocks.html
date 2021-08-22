@@ -9,21 +9,62 @@
     <link rel="shortcut icon" href="/img/logo.png">
     <link rel="stylesheet" href="/styles/tutorial.css">
     <link rel="stylesheet" href="/styles/md.css">
+    <link rel="stylesheet" href="/styles/index.css">
     <link rel="stylesheet" id="theme" href="">
     <link rel="stylesheet" href="/code.css">
+
+    <style>
+        #nav {
+            width: 90%;
+            opacity: 60%;
+        }
+
+        #nav:hover {
+            opacity: 100%;
+        }
+
+        #nav .post {
+            width: 30%;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .centered {
+            width: 100%; max-width: 800px; display: inline-block;
+        }
+
+        @media only screen and (max-width: 850px) {
+            #nav .post {
+                width: 45%;
+            }
+        }
+
+        @media only screen and (max-width: 600px) {
+            #nav {
+                width: 95%;
+                max-width: 300px;
+            }
+
+            #nav .post {
+                width: auto;
+                max-width: 300px;
+                display: block;
+            }
+        }
+    </style>
+    
 </head>
 <body>
-    <div class="hide-for-print" style="max-width: 800px; width: 100%; text-align: left; display: inline-block;">
-        <a href="/" style="font-size: 2rem;">Home</a> 
-        <label class="switch" style="float: right;">
-            <input type="checkbox" id="dark" onclick="updateDarkmode()">
-            <span class="slider round"></span>
-        </label>
-    </div> <br> <br>
+        <div class="hide-for-print centered" style="text-align: left;">
+            <a href="/" style="font-size: 2rem;">Home</a> 
+            <label class="switch" style="float: right;">
+                <input type="checkbox" id="dark" onclick="updateDarkmode()">
+                <span class="slider round"></span>
+            </label>
+        </div> <br> <br>
 
-    
-    <div id="content" class="markdown-body">
-        <p>A tutorial on making a block with custom behaviour. It will react to being right clicked, explosions, random ticks and even act as soil for crops!</p>
+        <div id="content" class="markdown-body centered">
+            <p>A tutorial on making a block with custom behaviour. It will react to being right clicked, explosions, random ticks and even act as soil for crops!</p>
 <h2>Init</h2>
 <p>Very similar to how we did <a href="/advanced-items">advanced items</a>, let's make a block that has some unique behaviour by creating our own version of the block class. Start with the same code for a <a href="/basic-blocks">basic block</a> but reference a new class. </p>
 <pre><code class="highlight"><span></span><span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">RegistryObject</span><span class="o">&lt;</span><span class="n">Block</span><span class="o">&gt;</span> <span class="n">SAD_BLOCK</span> <span class="o">=</span> <span class="n">BLOCKS</span><span class="p">.</span><span class="na">register</span><span class="p">(</span><span class="s">&quot;sad_block&quot;</span><span class="p">,</span>
@@ -251,51 +292,60 @@
 <p>Make a directional block that rotates when you right click it</p>
 </li>
 </ul> 
-    </div>
-    
-
-    <div class="hide-for-print">
-        <br>
-        <div style="width: 100%; max-width: 800px; display: inline-block;" class="hide-for-print">
-            <button class="btn btn-primary" style="width: 19%;" onclick="back()" id="back">Back</button>
-            <button class="btn btn-primary" style="width: 80%;" onclick="next()" id="next">Next Tutorial</button> <br> <br>
         </div>
-        <br><br>
 
-        <!--
-
-        If you have any questions or suggestions, don't hesitate to ask me on [discord](https://discord.gg/VbZVnRd).
-
-        Also, the full code for all my tutorials is available on [github](https://github.com/LukeGrahamLandry/forge-modding-tutorial/tree/1.16.5).
-
-         -->
-
-        <a href="https://github.com/LukeGrahamLandry/forge-modding-tutorial/tree/1.16.5" class="img-link">
-            <div class="app">
-                <img src="./img/github.png" style="width: 70px">
+        <div class="hide-for-print">
+            <br>
+            <div class="hide-for-print centered">
+                <a id="back-a" class="img-link">
+                    <button class="btn btn-primary" style="width: 18%;" id="back">Back</button>
+                </a>
+                <a id="next-a" class="img-link">
+                    <button class="btn btn-primary" style="width: 80%;" id="next">Next Tutorial</button>
+                </a>
             </div>
-        </a>
+            <br><br>
+    
+            <!--
+    
+            If you have any questions or suggestions, don't hesitate to ask me on [discord](https://discord.gg/VbZVnRd).
+    
+            Also, the full code for all my tutorials is available on [github](https://github.com/LukeGrahamLandry/forge-modding-tutorial/tree/1.16.5).
+    
+             -->
 
-        <a href="https://discord.gg/VbZVnRd" class="img-link">
-            <div class="app">
-                <img src="./img/discord.png" style="width: 70px">
-            </div>
-        </a>
-
-        <!--
-        <a href="https://www.youtube.com/playlist?list=PLxBLp3RqmUMEU5vrtMY6tgfP2lnJD0OUj" class="img-link">
-            <div class="app">
-                <img src="img/youtube.png" style="width: 70px">
-            </div>
-        </a>
-        -->
-
-        <a href="https://www.patreon.com/LukeGrahamLandry" class="img-link">
-            <div class="app">
-                <img src="./img/patreon.png" style="width: 70px">
-            </div>
-        </a>
-    </div>
+             <div style="border: 2px solid red; width: fit-content; display: inline-block;">
+                <a href="https://github.com/LukeGrahamLandry/forge-modding-tutorial/tree/1.16.5" class="img-link">
+                    <div class="app">
+                        <img src="./img/github.png" style="width: 70px">
+                    </div>
+                </a>
+        
+                <a href="https://discord.gg/VbZVnRd" class="img-link">
+                    <div class="app">
+                        <img src="./img/discord.png" style="width: 70px">
+                    </div>
+                </a>
+        
+                <!--
+                <a href="https://www.youtube.com/playlist?list=PLxBLp3RqmUMEU5vrtMY6tgfP2lnJD0OUj" class="img-link">
+                    <div class="app">
+                        <img src="img/youtube.png" style="width: 70px">
+                    </div>
+                </a>
+                -->
+        
+                <a href="https://www.patreon.com/LukeGrahamLandry" class="img-link">
+                    <div class="app">
+                        <img src="./img/patreon.png" style="width: 70px">
+                    </div>
+                </a>    
+             </div>
+    
+            <br> <br>
+            <div id="nav" class="centered"></div>
+        </div>
+    
 
     <script src="/js/dark.js"></script>
     <script src="/index.js"></script>
@@ -304,19 +354,14 @@
         let index = getTutorials().indexOf(thisPage);
         if (index == 0){
             document.getElementById("back").disabled = true;
-            console.log("back")
+        } else {
+            document.getElementById("back-a").href = "/" + getTutorials()[index - 1];
         }
+
         if (index == (getTutorials().length - 1)){
             document.getElementById("next").disabled = true;
-            console.log("next")
-        }
-
-        function back(){
-            window.location.href = "/" + getTutorials()[index - 1]
-        }
-
-        function next(){
-            window.location.href = "/" + getTutorials()[index + 1]
+        } else {
+            document.getElementById("next-a").href =  "/" + getTutorials()[index + 1]
         }
     </script>
 </body>

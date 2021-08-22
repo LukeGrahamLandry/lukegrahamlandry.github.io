@@ -39,11 +39,9 @@ for root, dirs, files in os.walk("../forge-1.16-tutorial-src", topdown=False):
             end = part.split("</code>")[1]
 
             styled_code = highlight(code, lex, formatter)
-
             
             styled_code = styled_code.split('<div class="highlight"><pre>')[1]
             styled_code = styled_code.split('</div>')[0]
-
 
             html_syntax_highlighted += '<code class="highlight">'
             html_syntax_highlighted += styled_code

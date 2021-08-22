@@ -60,7 +60,7 @@ Open `src/main/resources/META-INF/mods.toml` It has a bunch of key value pairs t
 
 The `build.gradle` file tells it what dependancies to download (like Minecraft and Forge). Set the group to whatever you named your package (and click the elephant icon in intellij to update these settings).
 
-    group = 'ca.lukegrahamlandry.firstmod'
+    group = "ca.lukegrahamlandry.firstmod"
     
 
 Close intellij, open the terminal, navigate to your mod folder and run the command below (on windows use CMD and you don't need the ./ prefix). It will take a while to run.
@@ -85,8 +85,8 @@ In the top level of your mod folder you'll find a few extra files about forge. I
 
 If you already have a 1.16 mod that you would like to follow these tutorials with, you should make sure you're using the same Minecraft and mappings version. Open your `build.gradle`. 
 
-In the `dependencies` block I have `minecraft 'net.minecraftforge:forge:1.16.5-36.1.0'`. The important part is that you're on 1.16.5, the forge version matters less. 
+In the `dependencies` block I have `minecraft "net.minecraftforge:forge:1.16.5-36.1.0"`. The important part is that you're on 1.16.5, the forge version matters less. 
 
-In the `minecraft` block I have `mappings channel: 'official', version: '1.16.5'`. Your mappings are what determine the names of the methods from vanilla Minecraft that you have to interact with.  If you change your mappings you should be able to automatically update your existing code. Run the `./gradlew -PUPDATE_MAPPINGS="1.16.5" -PUPDATE_MAPPINGS_CHANNEL="official" updateMappings` command in your main mod folder (same as above, windows uses CMD instead of terminal and does not have the `./` prefix). 
+In the `minecraft` block I have `mappings channel: "official", version: "1.16.5"`. Your mappings are what determine the names of the methods from vanilla Minecraft that you have to interact with.  If you change your mappings you should be able to automatically update your existing code. Run the `./gradlew -PUPDATE_MAPPINGS="1.16.5" -PUPDATE_MAPPINGS_CHANNEL="official" updateMappings` command in your main mod folder (same as above, windows uses CMD instead of terminal and does not have the `./` prefix). 
 
 Now you should be ready to follow along with the rest of my tutorials!

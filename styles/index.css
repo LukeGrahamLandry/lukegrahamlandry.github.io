@@ -4,17 +4,19 @@ body {
     background-color: rgb(229, 226, 226);
 }
 
-#nav {
+.full-nav {
     width: 100%;
     max-width: 300px;
     display: inline-block;
-    text-align: left;
-    padding: 25px;
-    background-color: white;
-    overflow-x: hidden;
-    overflow-y: auto;
-
     max-height: 500px;
+}
+
+#nav {
+  text-align: left;
+  padding: 25px;
+  background-color: white;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .post {

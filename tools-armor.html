@@ -9,21 +9,62 @@
     <link rel="shortcut icon" href="/img/logo.png">
     <link rel="stylesheet" href="/styles/tutorial.css">
     <link rel="stylesheet" href="/styles/md.css">
+    <link rel="stylesheet" href="/styles/index.css">
     <link rel="stylesheet" id="theme" href="">
     <link rel="stylesheet" href="/code.css">
+
+    <style>
+        #nav {
+            width: 90%;
+            opacity: 60%;
+        }
+
+        #nav:hover {
+            opacity: 100%;
+        }
+
+        #nav .post {
+            width: 30%;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .centered {
+            width: 100%; max-width: 800px; display: inline-block;
+        }
+
+        @media only screen and (max-width: 850px) {
+            #nav .post {
+                width: 45%;
+            }
+        }
+
+        @media only screen and (max-width: 600px) {
+            #nav {
+                width: 95%;
+                max-width: 300px;
+            }
+
+            #nav .post {
+                width: auto;
+                max-width: 300px;
+                display: block;
+            }
+        }
+    </style>
+    
 </head>
 <body>
-    <div class="hide-for-print" style="max-width: 800px; width: 100%; text-align: left; display: inline-block;">
-        <a href="/" style="font-size: 2rem;">Home</a> 
-        <label class="switch" style="float: right;">
-            <input type="checkbox" id="dark" onclick="updateDarkmode()">
-            <span class="slider round"></span>
-        </label>
-    </div> <br> <br>
+        <div class="hide-for-print centered" style="text-align: left;">
+            <a href="/" style="font-size: 2rem;">Home</a> 
+            <label class="switch" style="float: right;">
+                <input type="checkbox" id="dark" onclick="updateDarkmode()">
+                <span class="slider round"></span>
+            </label>
+        </div> <br> <br>
 
-    
-    <div id="content" class="markdown-body">
-        <p>In this tutorial we make a simple set of tools and armor. We also make an armor piece that reacts to ticks and being attacked.</p>
+        <div id="content" class="markdown-body centered">
+            <p>In this tutorial we make a simple set of tools and armor. We also make an armor piece that reacts to ticks and being attacked.</p>
 <h2>Tools</h2>
 <p>Tools are simply items that use special classes instead of the basic <code class="highlight"><span></span><span class="n">Item</span>
 </pre></code>.</p>
@@ -335,51 +376,60 @@ Use those exact templates because the positioning is important, they should be 5
 <ul>
 <li>You can make armor with complex 3d models made in BlockBench. This will be covered in a future tutorial. <a href="https://discord.gg/VbZVnRd">Join the discord server</a> to be notified when it is released. </li>
 </ul> 
-    </div>
-    
-
-    <div class="hide-for-print">
-        <br>
-        <div style="width: 100%; max-width: 800px; display: inline-block;" class="hide-for-print">
-            <button class="btn btn-primary" style="width: 19%;" onclick="back()" id="back">Back</button>
-            <button class="btn btn-primary" style="width: 80%;" onclick="next()" id="next">Next Tutorial</button> <br> <br>
         </div>
-        <br><br>
 
-        <!--
-
-        If you have any questions or suggestions, don't hesitate to ask me on [discord](https://discord.gg/VbZVnRd).
-
-        Also, the full code for all my tutorials is available on [github](https://github.com/LukeGrahamLandry/forge-modding-tutorial/tree/1.16.5).
-
-         -->
-
-        <a href="https://github.com/LukeGrahamLandry/forge-modding-tutorial/tree/1.16.5" class="img-link">
-            <div class="app">
-                <img src="./img/github.png" style="width: 70px">
+        <div class="hide-for-print">
+            <br>
+            <div class="hide-for-print centered">
+                <a id="back-a" class="img-link">
+                    <button class="btn btn-primary" style="width: 18%;" id="back">Back</button>
+                </a>
+                <a id="next-a" class="img-link">
+                    <button class="btn btn-primary" style="width: 80%;" id="next">Next Tutorial</button>
+                </a>
             </div>
-        </a>
+            <br><br>
+    
+            <!--
+    
+            If you have any questions or suggestions, don't hesitate to ask me on [discord](https://discord.gg/VbZVnRd).
+    
+            Also, the full code for all my tutorials is available on [github](https://github.com/LukeGrahamLandry/forge-modding-tutorial/tree/1.16.5).
+    
+             -->
 
-        <a href="https://discord.gg/VbZVnRd" class="img-link">
-            <div class="app">
-                <img src="./img/discord.png" style="width: 70px">
-            </div>
-        </a>
-
-        <!--
-        <a href="https://www.youtube.com/playlist?list=PLxBLp3RqmUMEU5vrtMY6tgfP2lnJD0OUj" class="img-link">
-            <div class="app">
-                <img src="img/youtube.png" style="width: 70px">
-            </div>
-        </a>
-        -->
-
-        <a href="https://www.patreon.com/LukeGrahamLandry" class="img-link">
-            <div class="app">
-                <img src="./img/patreon.png" style="width: 70px">
-            </div>
-        </a>
-    </div>
+             <div style="border: 2px solid red; width: fit-content; display: inline-block;">
+                <a href="https://github.com/LukeGrahamLandry/forge-modding-tutorial/tree/1.16.5" class="img-link">
+                    <div class="app">
+                        <img src="./img/github.png" style="width: 70px">
+                    </div>
+                </a>
+        
+                <a href="https://discord.gg/VbZVnRd" class="img-link">
+                    <div class="app">
+                        <img src="./img/discord.png" style="width: 70px">
+                    </div>
+                </a>
+        
+                <!--
+                <a href="https://www.youtube.com/playlist?list=PLxBLp3RqmUMEU5vrtMY6tgfP2lnJD0OUj" class="img-link">
+                    <div class="app">
+                        <img src="img/youtube.png" style="width: 70px">
+                    </div>
+                </a>
+                -->
+        
+                <a href="https://www.patreon.com/LukeGrahamLandry" class="img-link">
+                    <div class="app">
+                        <img src="./img/patreon.png" style="width: 70px">
+                    </div>
+                </a>    
+             </div>
+    
+            <br> <br>
+            <div id="nav" class="centered"></div>
+        </div>
+    
 
     <script src="/js/dark.js"></script>
     <script src="/index.js"></script>
@@ -388,19 +438,14 @@ Use those exact templates because the positioning is important, they should be 5
         let index = getTutorials().indexOf(thisPage);
         if (index == 0){
             document.getElementById("back").disabled = true;
-            console.log("back")
+        } else {
+            document.getElementById("back-a").href = "/" + getTutorials()[index - 1];
         }
+
         if (index == (getTutorials().length - 1)){
             document.getElementById("next").disabled = true;
-            console.log("next")
-        }
-
-        function back(){
-            window.location.href = "/" + getTutorials()[index - 1]
-        }
-
-        function next(){
-            window.location.href = "/" + getTutorials()[index + 1]
+        } else {
+            document.getElementById("next-a").href =  "/" + getTutorials()[index + 1]
         }
     </script>
 </body>

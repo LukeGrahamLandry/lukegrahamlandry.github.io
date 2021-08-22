@@ -9,21 +9,62 @@
     <link rel="shortcut icon" href="/img/logo.png">
     <link rel="stylesheet" href="/styles/tutorial.css">
     <link rel="stylesheet" href="/styles/md.css">
+    <link rel="stylesheet" href="/styles/index.css">
     <link rel="stylesheet" id="theme" href="">
     <link rel="stylesheet" href="/code.css">
+
+    <style>
+        #nav {
+            width: 90%;
+            opacity: 60%;
+        }
+
+        #nav:hover {
+            opacity: 100%;
+        }
+
+        #nav .post {
+            width: 30%;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .centered {
+            width: 100%; max-width: 800px; display: inline-block;
+        }
+
+        @media only screen and (max-width: 850px) {
+            #nav .post {
+                width: 45%;
+            }
+        }
+
+        @media only screen and (max-width: 600px) {
+            #nav {
+                width: 95%;
+                max-width: 300px;
+            }
+
+            #nav .post {
+                width: auto;
+                max-width: 300px;
+                display: block;
+            }
+        }
+    </style>
+    
 </head>
 <body>
-    <div class="hide-for-print" style="max-width: 800px; width: 100%; text-align: left; display: inline-block;">
-        <a href="/" style="font-size: 2rem;">Home</a> 
-        <label class="switch" style="float: right;">
-            <input type="checkbox" id="dark" onclick="updateDarkmode()">
-            <span class="slider round"></span>
-        </label>
-    </div> <br> <br>
+        <div class="hide-for-print centered" style="text-align: left;">
+            <a href="/" style="font-size: 2rem;">Home</a> 
+            <label class="switch" style="float: right;">
+                <input type="checkbox" id="dark" onclick="updateDarkmode()">
+                <span class="slider round"></span>
+            </label>
+        </div> <br> <br>
 
-    
-    <div id="content" class="markdown-body">
-        <p>How to setup a forge development environment for 1.16.5 with the official mappings. We download java 8, forge and IntelliJ. We also rename our main package and class and update the mods.toml file.</p>
+        <div id="content" class="markdown-body centered">
+            <p>How to setup a forge development environment for 1.16.5 with the official mappings. We download java 8, forge and IntelliJ. We also rename our main package and class and update the mods.toml file.</p>
 <h2>Downloading</h2>
 <p>First, download the JDK (java 8 development kit). Go to <a href="https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html">oracle.com</a> and select your operating system. It will ask you to make an account but you can borrow someone else's credentials from <a href="http://bugmenot.com/view/oracle.com">bugmenot.com</a>. Just copy paste them in and if the first doesn't work, try the next one.</p>
 <p>Next you need the Forge 1.16.5 MDK (mod development kit) from <a href="https://files.minecraftforge.net/net/minecraftforge/forge/index_1.16.5.html">files.minecraftforge.net</a>. Get the recommended version cause its the most likely to work.
@@ -75,7 +116,7 @@ When you click the button to download the MDK it will send you to a page with ad
 </pre></code></pre>
 <p>The <code class="highlight"><span></span><span class="n">build</span><span class="p">.</span><span class="na">gradle</span>
 </pre></code> file tells it what dependancies to download (like Minecraft and Forge). Set the group to whatever you named your package (and click the elephant icon in intellij to update these settings).</p>
-<pre><code class="highlight"><span></span><span class="n">group</span> <span class="o">=</span> <span class="err">&#39;</span><span class="n">ca</span><span class="p">.</span><span class="na">lukegrahamlandry</span><span class="p">.</span><span class="na">firstmod</span><span class="err">&#39;</span>
+<pre><code class="highlight"><span></span><span class="n">group</span> <span class="o">=</span> <span class="s">&quot;ca.lukegrahamlandry.firstmod&quot;</span>
 </pre></code></pre>
 <p>Close intellij, open the terminal, navigate to your mod folder and run the command below (on windows use CMD and you don't need the ./ prefix). It will take a while to run.</p>
 <pre><code class="highlight"><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">mod</span><span class="o">/</span><span class="n">folder</span>
@@ -97,59 +138,68 @@ When you click the button to download the MDK it will send you to a page with ad
 <p>If you already have a 1.16 mod that you would like to follow these tutorials with, you should make sure you're using the same Minecraft and mappings version. Open your <code class="highlight"><span></span><span class="n">build</span><span class="p">.</span><span class="na">gradle</span>
 </pre></code>. </p>
 <p>In the <code class="highlight"><span></span><span class="n">dependencies</span>
-</pre></code> block I have <code class="highlight"><span></span><span class="n">minecraft</span> <span class="err">&#39;</span><span class="n">net</span><span class="p">.</span><span class="na">minecraftforge</span><span class="p">:</span><span class="n">forge</span><span class="p">:</span><span class="mf">1.16.5</span><span class="o">-</span><span class="mf">36.1.0</span><span class="err">&#39;</span>
+</pre></code> block I have <code class="highlight"><span></span><span class="n">minecraft</span> <span class="s">&quot;net.minecraftforge:forge:1.16.5-36.1.0&quot;</span>
 </pre></code>. The important part is that you're on 1.16.5, the forge version matters less. </p>
 <p>In the <code class="highlight"><span></span><span class="n">minecraft</span>
-</pre></code> block I have <code class="highlight"><span></span><span class="n">mappings</span> <span class="n">channel</span><span class="p">:</span> <span class="err">&#39;</span><span class="n">official</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="err">&#39;</span><span class="mf">1.16.5</span><span class="err">&#39;</span>
+</pre></code> block I have <code class="highlight"><span></span><span class="n">mappings</span> <span class="n">channel</span><span class="p">:</span> <span class="s">&quot;official&quot;</span><span class="p">,</span> <span class="n">version</span><span class="p">:</span> <span class="s">&quot;1.16.5&quot;</span>
 </pre></code>. Your mappings are what determine the names of the methods from vanilla Minecraft that you have to interact with.  If you change your mappings you should be able to automatically update your existing code. Run the <code class="highlight"><span></span><span class="p">.</span><span class="o">/</span><span class="n">gradlew</span> <span class="o">-</span><span class="n">PUPDATE_MAPPINGS</span><span class="o">=</span><span class="s">&quot;1.16.5&quot;</span> <span class="o">-</span><span class="n">PUPDATE_MAPPINGS_CHANNEL</span><span class="o">=</span><span class="s">&quot;official&quot;</span> <span class="n">updateMappings</span>
 </pre></code> command in your main mod folder (same as above, windows uses CMD instead of terminal and does not have the <code class="highlight"><span></span><span class="p">.</span><span class="o">/</span>
 </pre></code> prefix). </p>
 <p>Now you should be ready to follow along with the rest of my tutorials!</p> 
-    </div>
-    
-
-    <div class="hide-for-print">
-        <br>
-        <div style="width: 100%; max-width: 800px; display: inline-block;" class="hide-for-print">
-            <button class="btn btn-primary" style="width: 19%;" onclick="back()" id="back">Back</button>
-            <button class="btn btn-primary" style="width: 80%;" onclick="next()" id="next">Next Tutorial</button> <br> <br>
         </div>
-        <br><br>
 
-        <!--
-
-        If you have any questions or suggestions, don't hesitate to ask me on [discord](https://discord.gg/VbZVnRd).
-
-        Also, the full code for all my tutorials is available on [github](https://github.com/LukeGrahamLandry/forge-modding-tutorial/tree/1.16.5).
-
-         -->
-
-        <a href="https://github.com/LukeGrahamLandry/forge-modding-tutorial/tree/1.16.5" class="img-link">
-            <div class="app">
-                <img src="./img/github.png" style="width: 70px">
+        <div class="hide-for-print">
+            <br>
+            <div class="hide-for-print centered">
+                <a id="back-a" class="img-link">
+                    <button class="btn btn-primary" style="width: 18%;" id="back">Back</button>
+                </a>
+                <a id="next-a" class="img-link">
+                    <button class="btn btn-primary" style="width: 80%;" id="next">Next Tutorial</button>
+                </a>
             </div>
-        </a>
+            <br><br>
+    
+            <!--
+    
+            If you have any questions or suggestions, don't hesitate to ask me on [discord](https://discord.gg/VbZVnRd).
+    
+            Also, the full code for all my tutorials is available on [github](https://github.com/LukeGrahamLandry/forge-modding-tutorial/tree/1.16.5).
+    
+             -->
 
-        <a href="https://discord.gg/VbZVnRd" class="img-link">
-            <div class="app">
-                <img src="./img/discord.png" style="width: 70px">
-            </div>
-        </a>
-
-        <!--
-        <a href="https://www.youtube.com/playlist?list=PLxBLp3RqmUMEU5vrtMY6tgfP2lnJD0OUj" class="img-link">
-            <div class="app">
-                <img src="img/youtube.png" style="width: 70px">
-            </div>
-        </a>
-        -->
-
-        <a href="https://www.patreon.com/LukeGrahamLandry" class="img-link">
-            <div class="app">
-                <img src="./img/patreon.png" style="width: 70px">
-            </div>
-        </a>
-    </div>
+             <div style="border: 2px solid red; width: fit-content; display: inline-block;">
+                <a href="https://github.com/LukeGrahamLandry/forge-modding-tutorial/tree/1.16.5" class="img-link">
+                    <div class="app">
+                        <img src="./img/github.png" style="width: 70px">
+                    </div>
+                </a>
+        
+                <a href="https://discord.gg/VbZVnRd" class="img-link">
+                    <div class="app">
+                        <img src="./img/discord.png" style="width: 70px">
+                    </div>
+                </a>
+        
+                <!--
+                <a href="https://www.youtube.com/playlist?list=PLxBLp3RqmUMEU5vrtMY6tgfP2lnJD0OUj" class="img-link">
+                    <div class="app">
+                        <img src="img/youtube.png" style="width: 70px">
+                    </div>
+                </a>
+                -->
+        
+                <a href="https://www.patreon.com/LukeGrahamLandry" class="img-link">
+                    <div class="app">
+                        <img src="./img/patreon.png" style="width: 70px">
+                    </div>
+                </a>    
+             </div>
+    
+            <br> <br>
+            <div id="nav" class="centered"></div>
+        </div>
+    
 
     <script src="/js/dark.js"></script>
     <script src="/index.js"></script>
@@ -158,19 +208,14 @@ When you click the button to download the MDK it will send you to a page with ad
         let index = getTutorials().indexOf(thisPage);
         if (index == 0){
             document.getElementById("back").disabled = true;
-            console.log("back")
+        } else {
+            document.getElementById("back-a").href = "/" + getTutorials()[index - 1];
         }
+
         if (index == (getTutorials().length - 1)){
             document.getElementById("next").disabled = true;
-            console.log("next")
-        }
-
-        function back(){
-            window.location.href = "/" + getTutorials()[index - 1]
-        }
-
-        function next(){
-            window.location.href = "/" + getTutorials()[index + 1]
+        } else {
+            document.getElementById("next-a").href =  "/" + getTutorials()[index + 1]
         }
     </script>
 </body>
