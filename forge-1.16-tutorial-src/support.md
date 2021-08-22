@@ -1,6 +1,6 @@
 If you'd like to directly support these tutorials, please donate on [Patreon](https://www.patreon.com/LukeGrahamLandry). You'll even get some fun perks! For $5 you can vote on future tutorial topics. 
 
-If you have an idea for a mod and would like to commission me to make it a reality, DM `LukeGrahamLandry#6888` on discord. Please have a detailed description of the features you want so I can give you a meaningful quote. I will require a deposit before I begin work.
+If you have an idea for a mod and would like to commission me to make it a reality, DM me on discord (LukeGrahamLandry#6888). Please have a detailed description of the features you want so I can give you a meaningful quote. I will require a deposit before I begin work.
 
 If you're looking for a free option, I love to when people [join the discord server](https://discord.com/invite/VbZVnRd)!
 
