@@ -2,44 +2,36 @@ Before you begin trying to make a Minecraft mod, it is important that you are co
 
 ## Types
 
-There are two kinds of data types: primitive and reference.
+Every piece of information your programs can store has a type. Simple data types are called primitives and are the building blocks of more complex types
 
-Primitive data types are the simple building blocks of information your programs can store. Such as, 
-
+- `boolean`, can either store `true` or `false`
 - `byte`, can store values of `-128` to `127`  
 - `short`, can store value of `-32768` to `32767` 
 - `int`, can store value of `-2147483648` to `2147483647`
 - `long`, can store value of `-9223372036854775808` to `9223372036854775807`
 - `char`, can store characters
-- `double`, can store decimal numbers
 - `float`, can store decimal numbers
-- `boolean`, can either store `true` or `false`
+- `double`, can store a wider range of decimal numbers
 
-Using smaller data types such as `byte` instead of a more versatile `long` is preferred when you can predict the range of your data because is saves memory. When variable whose value you know will never go over 127, there's no reason to use 4 times the memory for an `int`. In practice, modern computers are powerful enough that it doesn't matter.
-
-Reference data types are objects of a class or an interface. They can have complex behaviors (by having methods) and store multiple pieces of data (both primitive and reference types). Later we will go over some examples that the standard library includes but you can also define your own class types. 
-
-Reference data types are considered objects, while primitive data types are not. Primitive data types can not point to `null` reference while reference data types can. The value of reference data types defaults to `null`, however. In the case of primitives, their default value is assigned as the minimum value. 
-
-All primitive types have a wrapper object that you may use if you need to permit a null value. For example, the `Integer` class holds and `int`. It's fine if this doesn't make sense yet and you will almost never need to use it anyway.
+Using smaller data types such as `byte` instead of a more versatile `long` is preferred when you can predict the range of your data because is saves memory. When you have a variable whose value you know will never go over 127, there's no reason to use 4 times the memory for an `int`. In practice, modern computers are powerful enough that it doesn't matter.
 
 ## Variables
 
-A variable holds one piece of data. They have a type (any primitive or reference type) and a name (so you can refer to it in your code).
+A variable holds one piece of information. They have a type, a name, and a value.
 
-To declare a variable, we specify the type of the variable (in this case an int) and give it a name.
+When you declare a variable, you first state the type you want to use and then the name for the variable. 
 
     int foo;
 
 To declare multiple variables with the same type:
-    int foo, foo1, foo2;
 
-> Every declaration ends with a `;` character, which essentially means "end of command", a command can be anything such as a method call or a variable declaration.
+```
+int foo, foo1, foo2;
+```
 
-Of course, this works with other types as well:
+Every statement (such as a declaration, assignment, method call) must end with a `;` character. The convention is to keep each statement on its own line of code.
 
-    String foo;
-    String foo2, foo3, foo4;
+When you declare a variable with a primitive type without assigning it a value, it will default to `0`.
 
 To give our variable a value other than the default we can initialize it with a value:
 
@@ -50,17 +42,42 @@ Or, first declare the variable and later in the code give it a value to store:
     int foo;
     foo = 1;
 
-## Operators 
+When you declare a float, double or long typed variable you must follow the number with a letter that represents the type. 
+
+```
+double a = 1.5d;
+float b = 4f;
+long c = 1234L;
+```
+
+
+
+## Comments 
+
+Any text on a line past `//` is ignored by the complier. This is called a comment. They can be used to describe the thought process behind your code to make it easier to read.
+
+Multi-line comments can be made by putting anything between `/*` and `*/`
+
+```
+/* this is not code
+it will be ignored */
+
+int foobar = 4; // also a comment
+```
+
+
+
+## Operators
 
 Operators act between two values. The five arithmetic operators are fairly self explanatory:
 
 - +,  addition 
 - -,  subtraction 
-- /,  division 
 - *, multiplication 
+- /,  division 
 - %, modulo (remainder) 
 
-> These can be only used while working with primitive types. The only exception is a string concatenation, when we want to put two sequence of characters together.
+These operators can be only used while working with primitive types. The only exception is a string concatenation, when we want to combine two sequences of characters into one String.
 
     int foo = 1;
     int bar = 2;
@@ -70,8 +87,6 @@ Operators act between two values. The five arithmetic operators are fairly self 
 Now result stores the value 3. In this case, the variables `foo` and `bar` are redundant. This is an equivalent statement: 
 
     int result = 1 + 2;
-
-> If you try to divide by zero the program will crash with an `ArithmeticException`. We'll talk more about exceptions later.
 
 Of course, the other operators work the same way. 
 
@@ -85,7 +100,17 @@ Of course, the other operators work the same way.
     String name = "Luke";
     String greeting = "Hi " + name;
 
-> Note that any text on a line past `//` is ignored by the complier. This is called a comment. They can be used to describe whats going on in your code so people who read it can understand more easily. you can also make a multi-line comment by putting anything between `/*` and `*/`
+The modulo operator (`%`) gives the remainder when the first number is divided by the second. For example, 
+
+```
+int baz = 10 % 3; // 1
+// 10 devided 3 is 3 with a remainder of 1
+
+int bar = 100 % 7; // 2
+// 100 devided by 7 is 14 with a remainder of 2
+```
+
+
 
 There are 3 boolean operators.
 
@@ -101,11 +126,18 @@ There are 3 boolean operators.
 There are 6 types of equality operator. They are used to compare 2 numbers and evaluate to a boolean. 
 
 - `==`, compares a value when used on primitive types and a reference when used on reference types 
-- `>=`, is greater than or equal 
-- `<=`, is less than or equal 
-- `>`, is greater than 
-- `<`, is less than 
+
 - `!=`, is not equal to (inverse of ==) 
+
+- `>`, is greater than 
+
+- `>=`, is greater than or equal 
+
+- `<`, is less than 
+
+- `<=`, is less than or equal 
+
+    
 
     boolean foo = 3 > 1; // true
     boolean bar = 9 == (3 + 4); // false
@@ -146,6 +178,12 @@ An if statement controls the flow of your program. You can specify code to run o
 
 ## For Loops
 
+## Scopes
+
+Variables declared within {a code block} cannot be accessed from outside the block. They can however, be accessed by inner blocks. 
+
+## Objects
+
 ## Methods
 
 ## Classes
@@ -169,10 +207,12 @@ which holds a dynamic sequence of any type
 - compared to an array 
 - list interface 
 
+## Example Type: HashMap
+
+- Maps keys to values 
+
+- Map interface 
+
 ## Example Type: Supplier 
 
-## Generics 
-
-
-# Sources
-the first two sections of this post were adapted from java tutorials by @temedy  
+## Generics

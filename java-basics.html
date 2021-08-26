@@ -69,9 +69,12 @@
         <div id="content" class="markdown-body centered">
             <p>Before you begin trying to make a Minecraft mod, it is important that you are comfortable with the Java programming language. There exist better ways to learn Java for beginners than this document but I'll make an attempt. If you've already got a good understanding of Java, I encourage you to skip this and get started making your mod. Otherwise, if you're already comfortable with another programming language, this will be trivial to learn, if not might be kinda difficult. </p>
 <h2>Types</h2>
-<p>There are two kinds of data types: primitive and reference.</p>
-<p>Primitive data types are the simple building blocks of information your programs can store. Such as, </p>
+<p>Every piece of information your programs can store has a type. Simple data types are called primitives and are the building blocks of more complex types</p>
 <ul>
+<li><code class="highlight"><span></span><span class="kt">boolean</span>
+</pre></code>, can either store <code class="highlight"><span></span><span class="kc">true</span>
+</pre></code> or <code class="highlight"><span></span><span class="kc">false</span>
+</pre></code></li>
 <li><code class="highlight"><span></span><span class="kt">byte</span>
 </pre></code>, can store values of <code class="highlight"><span></span><span class="o">-</span><span class="mi">128</span>
 </pre></code> to <code class="highlight"><span></span><span class="mi">127</span>
@@ -90,41 +93,27 @@
 </pre></code></li>
 <li><code class="highlight"><span></span><span class="kt">char</span>
 </pre></code>, can store characters</li>
-<li><code class="highlight"><span></span><span class="kt">double</span>
-</pre></code>, can store decimal numbers</li>
 <li><code class="highlight"><span></span><span class="kt">float</span>
 </pre></code>, can store decimal numbers</li>
-<li><code class="highlight"><span></span><span class="kt">boolean</span>
-</pre></code>, can either store <code class="highlight"><span></span><span class="kc">true</span>
-</pre></code> or <code class="highlight"><span></span><span class="kc">false</span>
-</pre></code></li>
+<li><code class="highlight"><span></span><span class="kt">double</span>
+</pre></code>, can store a wider range of decimal numbers</li>
 </ul>
 <p>Using smaller data types such as <code class="highlight"><span></span><span class="kt">byte</span>
 </pre></code> instead of a more versatile <code class="highlight"><span></span><span class="kt">long</span>
-</pre></code> is preferred when you can predict the range of your data because is saves memory. When variable whose value you know will never go over 127, there's no reason to use 4 times the memory for an <code class="highlight"><span></span><span class="kt">int</span>
+</pre></code> is preferred when you can predict the range of your data because is saves memory. When you have a variable whose value you know will never go over 127, there's no reason to use 4 times the memory for an <code class="highlight"><span></span><span class="kt">int</span>
 </pre></code>. In practice, modern computers are powerful enough that it doesn't matter.</p>
-<p>Reference data types are objects of a class or an interface. They can have complex behaviors (by having methods) and store multiple pieces of data (both primitive and reference types). Later we will go over some examples that the standard library includes but you can also define your own class types. </p>
-<p>Reference data types are considered objects, while primitive data types are not. Primitive data types can not point to <code class="highlight"><span></span><span class="kc">null</span>
-</pre></code> reference while reference data types can. The value of reference data types defaults to <code class="highlight"><span></span><span class="kc">null</span>
-</pre></code>, however. In the case of primitives, their default value is assigned as the minimum value. </p>
-<p>All primitive types have a wrapper object that you may use if you need to permit a null value. For example, the <code class="highlight"><span></span><span class="n">Integer</span>
-</pre></code> class holds and <code class="highlight"><span></span><span class="kt">int</span>
-</pre></code>. It's fine if this doesn't make sense yet and you will almost never need to use it anyway.</p>
 <h2>Variables</h2>
-<p>A variable holds one piece of data. They have a type (any primitive or reference type) and a name (so you can refer to it in your code).</p>
-<p>To declare a variable, we specify the type of the variable (in this case an int) and give it a name.</p>
+<p>A variable holds one piece of information. They have a type, a name, and a value.</p>
+<p>When you declare a variable, you first state the type you want to use and then the name for the variable. </p>
 <pre><code class="highlight"><span></span><span class="kt">int</span> <span class="n">foo</span><span class="p">;</span>
 </pre></code></pre>
-<p>To declare multiple variables with the same type:
-    int foo, foo1, foo2;</p>
-<blockquote>
-<p>Every declaration ends with a <code class="highlight"><span></span><span class="p">;</span>
-</pre></code> character, which essentially means "end of command", a command can be anything such as a method call or a variable declaration.</p>
-</blockquote>
-<p>Of course, this works with other types as well:</p>
-<pre><code class="highlight"><span></span><span class="n">String</span> <span class="n">foo</span><span class="p">;</span>
-<span class="n">String</span> <span class="n">foo2</span><span class="p">,</span> <span class="n">foo3</span><span class="p">,</span> <span class="n">foo4</span><span class="p">;</span>
-</pre></code></pre>
+<p>To declare multiple variables with the same type:</p>
+<p><code class="highlight"><span></span><span class="kt">int</span> <span class="n">foo</span><span class="p">,</span> <span class="n">foo1</span><span class="p">,</span> <span class="n">foo2</span><span class="p">;</span>
+</pre></code></p>
+<p>Every statement (such as a declaration, assignment, method call) must end with a <code class="highlight"><span></span><span class="p">;</span>
+</pre></code> character. The convention is to keep each statement on its own line of code.</p>
+<p>When you declare a variable with a primitive type without assigning it a value, it will default to <code class="highlight"><span></span><span class="mi">0</span>
+</pre></code>.</p>
 <p>To give our variable a value other than the default we can initialize it with a value:</p>
 <pre><code class="highlight"><span></span><span class="kt">int</span> <span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
 </pre></code></pre>
@@ -132,18 +121,32 @@
 <pre><code class="highlight"><span></span><span class="kt">int</span> <span class="n">foo</span><span class="p">;</span>
 <span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
 </pre></code></pre>
+<p>When you declare a float, double or long typed variable you must follow the number with a letter that represents the type. </p>
+<p><code class="highlight"><span></span><span class="kt">double</span> <span class="n">a</span> <span class="o">=</span> <span class="mf">1.5d</span><span class="p">;</span>
+<span class="kt">float</span> <span class="n">b</span> <span class="o">=</span> <span class="mf">4f</span><span class="p">;</span>
+<span class="kt">long</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">1234L</span><span class="p">;</span>
+</pre></code></p>
+<h2>Comments</h2>
+<p>Any text on a line past <code class="highlight"><span></span><span class="c1">//</span>
+</pre></code> is ignored by the complier. This is called a comment. They can be used to describe the thought process behind your code to make it easier to read.</p>
+<p>Multi-line comments can be made by putting anything between <code class="highlight"><span></span><span class="o">/*</span>
+</pre></code> and <code class="highlight"><span></span><span class="o">*/</span>
+</pre></code></p>
+<p>```
+/<em> this is not code
+it will be ignored </em>/</p>
+<p>int foobar = 4; // also a comment
+```</p>
 <h2>Operators</h2>
 <p>Operators act between two values. The five arithmetic operators are fairly self explanatory:</p>
 <ul>
 <li>+,  addition </li>
 <li>-,  subtraction </li>
-<li>/,  division </li>
 <li>*, multiplication </li>
+<li>/,  division </li>
 <li>%, modulo (remainder) </li>
 </ul>
-<blockquote>
-<p>These can be only used while working with primitive types. The only exception is a string concatenation, when we want to put two sequence of characters together.</p>
-</blockquote>
+<p>These operators can be only used while working with primitive types. The only exception is a string concatenation, when we want to combine two sequences of characters into one String.</p>
 <pre><code class="highlight"><span></span><span class="kt">int</span> <span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
 <span class="kt">int</span> <span class="n">bar</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
 
@@ -154,10 +157,6 @@
 </pre></code> are redundant. This is an equivalent statement: </p>
 <pre><code class="highlight"><span></span><span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span><span class="p">;</span>
 </pre></code></pre>
-<blockquote>
-<p>If you try to divide by zero the program will crash with an <code class="highlight"><span></span><span class="n">ArithmeticException</span>
-</pre></code>. We'll talk more about exceptions later.</p>
-</blockquote>
 <p>Of course, the other operators work the same way. </p>
 <pre><code class="highlight"><span></span><span class="kt">double</span> <span class="n">speed</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="mf">8.0</span><span class="p">;</span> <span class="c1">// speed is now 0.125</span>
 <span class="kt">double</span> <span class="n">four</span> <span class="o">=</span> <span class="n">speed</span> <span class="o">*</span> <span class="mi">32</span><span class="p">;</span>
@@ -169,12 +168,14 @@
 <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Luke&quot;</span><span class="p">;</span>
 <span class="n">String</span> <span class="n">greeting</span> <span class="o">=</span> <span class="s">&quot;Hi &quot;</span> <span class="o">+</span> <span class="n">name</span><span class="p">;</span>
 </pre></code></pre>
-<blockquote>
-<p>Note that any text on a line past <code class="highlight"><span></span><span class="c1">//</span>
-</pre></code> is ignored by the complier. This is called a comment. They can be used to describe whats going on in your code so people who read it can understand more easily. you can also make a multi-line comment by putting anything between <code class="highlight"><span></span><span class="o">/*</span>
-</pre></code> and <code class="highlight"><span></span><span class="o">*/</span>
-</pre></code></p>
-</blockquote>
+<p>The modulo operator (<code class="highlight"><span></span><span class="o">%</span>
+</pre></code>) gives the remainder when the first number is divided by the second. For example, </p>
+<p>```
+int baz = 10 % 3; // 1
+// 10 devided 3 is 3 with a remainder of 1</p>
+<p>int bar = 100 % 7; // 2
+// 100 devided by 7 is 14 with a remainder of 2
+```</p>
 <p>There are 3 boolean operators.</p>
 <ul>
 <li><code class="highlight"><span></span><span class="o">!</span>
@@ -192,19 +193,29 @@ boolean bam = foo || bar; // true</p>
 </ul>
 <p>There are 6 types of equality operator. They are used to compare 2 numbers and evaluate to a boolean. </p>
 <ul>
-<li><code class="highlight"><span></span><span class="o">==</span>
-</pre></code>, compares a value when used on primitive types and a reference when used on reference types </li>
-<li><code class="highlight"><span></span><span class="o">&gt;=</span>
-</pre></code>, is greater than or equal </li>
-<li><code class="highlight"><span></span><span class="o">&lt;=</span>
-</pre></code>, is less than or equal </li>
-<li><code class="highlight"><span></span><span class="o">&gt;</span>
-</pre></code>, is greater than </li>
-<li><code class="highlight"><span></span><span class="o">&lt;</span>
-</pre></code>, is less than </li>
+<li>
+<p><code class="highlight"><span></span><span class="o">==</span>
+</pre></code>, compares a value when used on primitive types and a reference when used on reference types </p>
+</li>
 <li>
 <p><code class="highlight"><span></span><span class="o">!=</span>
 </pre></code>, is not equal to (inverse of ==) </p>
+</li>
+<li>
+<p><code class="highlight"><span></span><span class="o">&gt;</span>
+</pre></code>, is greater than </p>
+</li>
+<li>
+<p><code class="highlight"><span></span><span class="o">&gt;=</span>
+</pre></code>, is greater than or equal </p>
+</li>
+<li>
+<p><code class="highlight"><span></span><span class="o">&lt;</span>
+</pre></code>, is less than </p>
+</li>
+<li>
+<p><code class="highlight"><span></span><span class="o">&lt;=</span>
+</pre></code>, is less than or equal </p>
 <p>boolean foo = 3 &gt; 1; // true
 boolean bar = 9 == (3 + 4); // false</p>
 </li>
@@ -242,6 +253,9 @@ boolean bar = 9 == (3 + 4); // false</p>
 <h1>to be continued...</h1>
 <h2>While Loops</h2>
 <h2>For Loops</h2>
+<h2>Scopes</h2>
+<p>Variables declared within {a code block} cannot be accessed from outside the block. They can however, be accessed by inner blocks. </p>
+<h2>Objects</h2>
 <h2>Methods</h2>
 <h2>Classes</h2>
 <h2>Inheritance</h2>
@@ -256,10 +270,17 @@ boolean bar = 9 == (3 + 4); // false</p>
 <li>compared to an array </li>
 <li>list interface </li>
 </ul>
+<h2>Example Type: HashMap</h2>
+<ul>
+<li>
+<p>Maps keys to values </p>
+</li>
+<li>
+<p>Map interface </p>
+</li>
+</ul>
 <h2>Example Type: Supplier</h2>
-<h2>Generics</h2>
-<h1>Sources</h1>
-<p>the first two sections of this post were adapted from java tutorials by @temedy  </p> 
+<h2>Generics</h2> 
         </div>
 
         <div class="hide-for-print">
